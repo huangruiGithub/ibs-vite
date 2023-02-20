@@ -78,9 +78,9 @@ export const createPermissionGuard = (router: Router): void => {
 }
 
 function routerGo(to: any, next: any, router: Router) {
-  // const page404 = { path: '*', redirect: '/404', hidden: true }
+  const page404 = { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
   getRouter = filterAsyncRouter(getRouter) // 过滤路由
-  // getRouter.push(page404)
+  getRouter.push(page404)
   // for (const item of getRouter) {
   //   router.options.routes.push(item)
   // }
