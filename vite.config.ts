@@ -16,9 +16,14 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    cors: false,
     proxy: {
       '/api': {
-        target: 'http://8.130.168.233:8073/api-prod/',
+
+        target: 'http://cqvi95.natappfree.cc/',
+        // target: 'http://8.130.168.233:8073/api-prod/',
+        // target: 'https://208038ug41.imdo.co',
+        // https://208038ug41.imdo.co/login/getTnfo
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/api/, '/')
       }

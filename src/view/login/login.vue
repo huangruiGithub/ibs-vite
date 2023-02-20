@@ -4,6 +4,7 @@
     <div class="login">
       <el-form
         ref="form"
+        :rules="rules"
         :model="loginForm"
         class="login-form"
         auto-complete="on"
@@ -27,6 +28,7 @@
             ref="password"
             v-model="loginForm.password"
             size="midden"
+            show-password
             placeholder="密码"
             name="password"
             tabindex="2"
@@ -53,12 +55,17 @@
 import md5 from 'js-md5'
 import { watch, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { login } from '../../api/user'
+import { useUserStore } from '/@/store/modules/user'
 const loading = ref(false)
 //路由
 const redirect = ref()
 const currentRoute = reactive(useRouter().currentRoute.value)
 const router = reactive(useRouter())
+const userStore = useUserStore()
+const rules = {
+  account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
+  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+}
 watch(
   useRouter().currentRoute,
   (route) => {
@@ -73,31 +80,29 @@ const loginForm = reactive({
 })
 const form = ref()
 const handleLogin = () => {
-  login({
-    account: '1',
-    password: '1',
-  })
   console.log('login')
-  form.value.validate((valid: boolean) => {
-    // if (valid) {
-    //   loading.value = true
-    //   const data = JSON.parse(JSON.stringify(loginForm))
-    //   data.password = md5(data.password)
-    //   store
-    //     .dispatch('user/login', data)
-    //     .then(() => {
-    //       store.dispatch('meter/initLevelName')
-    //       router.push({ path: redirect.value || '/' })
-    //       loading.value = false
-    //     })
-    //     .catch(() => {
-    //       loading.value = false
-    //     })
-    // } else {
-    //   console.log('error submit!!')
-    //   return false
-    // }
+  form.value.validate().then(() => {
+    userStore.login({ ...loginForm, password: md5(loginForm.password) })
   })
+
+  // if (valid) {
+  //   loading.value = true
+  //   const data = JSON.parse(JSON.stringify(loginForm))
+  //   data.password = md5(data.password)
+  //   store
+  //     .dispatch('user/login', data)
+  //     .then(() => {
+  //       store.dispatch('meter/initLevelName')
+  //       router.push({ path: redirect.value || '/' })
+  //       loading.value = false
+  //     })
+  //     .catch(() => {
+  //       loading.value = false
+  //     })
+  // } else {
+  //   console.log('error submit!!')
+  //   return false
+  // }
 }
 </script>
 <style lang="scss" scoped>
