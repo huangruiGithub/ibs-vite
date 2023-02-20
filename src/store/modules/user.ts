@@ -53,7 +53,7 @@ export const useUserStore = defineStore({
             // localStorage.setItem('account', encodeURIComponent(response.data.user.account))
             // localStorage.setItem('password', encodeURIComponent(response.data.user.password))
             setToken(response.data.user.userId)
-            this.getInfo()
+
             resolve(response)
           })
           .catch((error: any) => {
