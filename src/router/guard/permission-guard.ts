@@ -30,7 +30,7 @@ export const createPermissionGuard = (router: Router): void => {
     if (hasToken) {
       if (to.path === '/login') {
         // if is logged in, redirect to the home page
-        // next({ path: '/' })
+        next()
         NProgress.done()
       } else {
         try {

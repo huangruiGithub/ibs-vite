@@ -1,134 +1,90 @@
 <template>
-  <div style="height: 100px">
-    1233
-    {{ title }}
-    <router-view></router-view>
+  <div class="main">
+    <el-container class="main-content">
+      <!-- :width="isCollapse ? '48px' : '210px' " -->
+      <el-aside :width="isCollapse ? '62px' : '210px'">
+        <!-- <hy-nav-menu :collapse="isCollapse" /> -->
+      </el-aside>
+
+      <el-container class="page">
+        <el-header class="page-header">
+          <!-- <hy-nav-header @foldClick="handleFoldClick" /> -->
+        </el-header>
+        <el-container class="page-content">
+          <el-main><router-view /></el-main>
+        </el-container>
+      </el-container>
+    </el-container>
   </div>
-  <!-- <div :class="classObj" class="app-wrapper">
-    <topbar />
-    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div :class="{ hasTagsView: needTagsView }" class="main-container">
-      <div :class="{ 'fixed-header': fixedHeader }">
-        <tags-view v-if="needTagsView" />
-      </div>
-      <app-main />
-    </div>
-  </div> -->
 </template>
+
 <script setup lang="ts">
-const title = 'layout'
+import { ref } from 'vue'
+
+// import HyNavMenu from '/@/components/nav-menu'
+
+// import HyNavHeader from '/@/components/nav-header'
+
+const isCollapse = ref<Boolean>(false)
+
+const handleFoldClick = (isFold: Boolean) => {
+  // console.log('isFold=', isFold)
+
+  isCollapse.value = isFold
+}
 </script>
 
-<!-- <script>
-import { Sidebar, AppMain, TagsView, Topbar, TabsBar } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
-import Socket from '@/utils/webSocket.js'
-export default {
-  name: 'Layout',
-  components: {
-    Sidebar,
-    TagsView,
-    AppMain,
-    Topbar
-  },
-  mixins: [ResizeMixin],
-  data() {
-    return {
-      messageWebsocket: null
-    }
-  },
-  computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
-    fixedHeader() {
-      return this.$store.state.settings.fixedHeader
-    },
-    needTagsView() {
-      return this.$store.state.settings.tagsView
-    },
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
-    }
-  },
-  destroyed() {},
-  mounted() {},
-  methods: {
-    getMessageTitle(type) {
-      switch (type) {
-        case 1:
-          return '设备预约申请'
-        case 2:
-          return '预约时间被修改'
-        case 3:
-          return '预约被拒绝'
-        case 4:
-          return '预约被批准'
-        case 5:
-          return '设备报警'
-        case 6:
-          return '值班操作'
-        case 8:
-          return '设备状态改变'
-        default:
-          return '特殊类型'
-      }
-    },
-    handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-    }
+<style scoped lang="less">
+@import '/@/styles/_var.less';
+
+.main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.main-content,
+.page {
+  height: 100%;
+}
+
+.page-content {
+  height: calc(100% - 48px);
+}
+
+.el-header,
+.el-footer {
+  display: flex;
+  color: #333;
+  text-align: center;
+  align-items: center;
+}
+
+.el-header {
+  height: 48px !important;
+}
+
+.el-aside {
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 200px;
+  text-align: left;
+  cursor: pointer;
+  background-color: @side-bg-color;
+  transition: width 0.3s linear;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
-</script> -->
 
-<style lang="scss" scoped>
-// @import '~@/styles/mixin.scss';
-// @import '~@/styles/variables.scss';
-
-// .app-wrapper {
-//   @include clearfix;
-//   position: relative;
-//   // height: 100%;
-//   height: $contentHeight;
-//   width: 100%;
-//   &.mobile.openSidebar {
-//     position: fixed;
-//     top: 0;
-//   }
-// }
-// .drawer-bg {
-//   background: #000;
-//   opacity: 0.3;
-//   width: 100%;
-//   top: 0;
-//   height: 100%;
-//   position: absolute;
-//   z-index: 999;
-// }
-
-// .fixed-header {
-//   position: fixed;
-//   top: 0;
-//   right: 0;
-//   z-index: 9;
-//   width: calc(100% - #{$sideBarWidth});
-//   transition: width 0.28s;
-// }
-
-// .hideSidebar .fixed-header {
-//   width: calc(100% - 54px);
-// }
-
-// .mobile .fixed-header {
-//   width: 100%;
-// }
+.el-main {
+  color: #333;
+  text-align: center;
+  background-color: #f0f2f5;
+}
 </style>
