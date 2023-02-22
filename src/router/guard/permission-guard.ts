@@ -8,6 +8,7 @@ import getPageTitle from '/@/utils/get-page-title'
 // const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法
 import Layout from '/@/views/layout/layout.vue' // Layout 是架构组件，不在后台返回，在文件里单独引入
 import error from '/@/views/404page/index.vue'
+import { localCache } from '/@/utils/cache'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -16,7 +17,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
  * @param router 路由对象z
  */
 
-let getRouter: any = null // 用来获取后台拿到的路由
+let routes: any = null // 用来获取后台拿到的路由
 const whiteList = ['/login'] // no redirect whitelist
 export const createPermissionGuard = (router: Router): void => {
 
@@ -34,25 +35,21 @@ export const createPermissionGuard = (router: Router): void => {
         NProgress.done()
       } else {
         try {
-          if (!getRouter) {
-            if (!getLocalStotageRouter('ibsRouter')) {
-
-              const getRouter = await
-                useUserStore().getInfo()
-              localStorage.setItem('ibsRouter', JSON.stringify(getRouter))// 存储路由到localStorage
+          if (!routes) {
+            const LocalStotageRouter = localCache.getItem('ibsRouter')
+            if (LocalStotageRouter) {
+              routes = LocalStotageRouter // 拿到路由
               routerGo(to, next, router) // 执行路由跳转方法
             } else {
-              getRouter = getLocalStotageRouter('ibsRouter') // 拿到路由
+              await useUserStore().getInfo()
               routerGo(to, next, router) // 执行路由跳转方法
             }
-            console.log(getRouter, 'getRouter')
           } else {
-            console.log('next')
             next()
           }
         } catch (error) {
           // remove token and go to login page to re-login
-          console.log(error)
+          console.error(error)
           // await store.dispatch('user/resetToken')
           // Message.error(error || 'Has Error')y
           next(`/login?redirect=${to.path}`)
@@ -79,29 +76,15 @@ export const createPermissionGuard = (router: Router): void => {
 
 function routerGo(to: any, next: any, router: Router) {
   const page404 = { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
-  getRouter = filterAsyncRouter(getRouter) // 过滤路由
-  getRouter.push(page404)
-  // for (const item of getRouter) {
-  //   router.options.routes.push(item)
-  // }
-  // router.options.routes.push(page404)
-
-  console.log(getRouter, 'getRouter')
-  for (const item of getRouter) {
-    console.log(item, 'addroute')
+  routes = filterAsyncRouter(routes) // 过滤路由
+  routes.push(page404)
+  for (const item of routes) {
     router.addRoute(item)
   }
   next({ ...to, replace: true })
 }
 
 
-function getLocalStotageRouter(name: string) {
-  // localStorage 获取数组对象的方法
-  // console.log('localStorage')
-  // console.log(JSON.parse(window.localStorage.getItem(name)))
-  const router = window.localStorage.getItem(name)
-  return router ? JSON.parse(router) : null
-}
 
 function filterAsyncRouter(asyncRouterMap: any) {
   // 遍历后台传来的路由字符串，转换为组件对象

@@ -82,7 +82,11 @@ const form = ref()
 const handleLogin = () => {
   console.log('login')
   form.value.validate().then(() => {
-    userStore.login({ ...loginForm, password: md5(loginForm.password) })
+    userStore
+      .login({ ...loginForm, password: md5(loginForm.password) })
+      .then(() => {
+        router.push('/eoms')
+      })
   })
 
   // if (valid) {

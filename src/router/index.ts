@@ -26,5 +26,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+export const resetRouter = () => {
+  location.reload()
+}
 // 导出
 export default router 

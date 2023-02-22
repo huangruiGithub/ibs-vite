@@ -1,14 +1,14 @@
 <template>
   <div class="sile-menu">
-    <div class="logo">
+    <div class="logo" @click="logoClick">
       <img class="img" src="https://cn.vitejs.dev/logo.svg" alt="logo" />
-      <span v-show="!isCollapse" class="title">Vue3Admin</span>
+      <span v-show="props.collapse" class="title">Vue3Admin</span>
     </div>
     <el-menu
       class="el-menu-vertical"
       :unique-opened="false"
       :default-active="currentActiveMenuIndex"
-      :collapse="isCollapse"
+      :collapse="!props.collapse"
       background-color="#001529"
       text-color="#B7BDC3"
       active-text-color="#fff"
@@ -17,26 +17,23 @@
         <!-- 1.只有一级菜单  -->
         <el-menu-item
           v-if="!(menu.children && menu.children.length)"
-          :index="menu.id + ''"
+          :index="menu.name"
           @click="handleItemClick(menu)"
         >
-          <i :class="menu.icon"></i>
+          <i :class="menu.meta.icon"></i>
           <!-- 这个标签不能删，折叠效果需要菜单需要 -->
-          <span>{{ menu.name }}</span>
+          <span>{{ menu.meta.title }}</span>
         </el-menu-item>
 
         <!-- 2.包含二级菜单 -->
-        <el-sub-menu v-else :index="menu.id + ''">
+        <el-sub-menu v-else :index="menu.name">
           <template #title>
             <i :class="menu.icon"></i>
-            <span>{{ menu.name }}</span>
+            <span>{{ menu.meta.title }}</span>
           </template>
           <template v-for="cmenu in menu.children" :key="cmenu.id">
-            <el-menu-item
-              :index="cmenu.id + ''"
-              @click="handleItemClick(cmenu)"
-            >
-              {{ cmenu.name }}
+            <el-menu-item :index="cmenu.name" @click="handleItemClick(cmenu)">
+              {{ cmenu.meta.title }}
             </el-menu-item>
           </template>
         </el-sub-menu>
@@ -44,9 +41,27 @@
     </el-menu>
   </div>
 </template>
-<script lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import router from '/@/router'
+import { useUserStore } from '/@/store/modules/user'
+const currentActiveMenuIndex = ref('')
+const props = {
+  collapse: {
+    type: Boolean,
+    default: false,
+  },
+}
+const menus = useUserStore().rights
+const handleItemClick = (menu: any) => {
+  console.log(menu)
+}
+const logoClick = () => {
+  console.log(menus)
+}
+</script>
 <style scoped lang="less">
-@import '/@/style/_var.less';
+@import '/@/styles/_var.less';
 // 混合
 .selectActiveColor {
   color: white !important;

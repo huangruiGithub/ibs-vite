@@ -1,14 +1,13 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <!-- :width="isCollapse ? '48px' : '210px' " -->
       <el-aside :width="isCollapse ? '62px' : '210px'">
-        <!-- <hy-nav-menu :collapse="isCollapse" /> -->
+        <NavMenu :collapse="isCollapse" />
       </el-aside>
 
       <el-container class="page">
         <el-header class="page-header">
-          <!-- <hy-nav-header @foldClick="handleFoldClick" /> -->
+          <nav-header @foldClick="handleFoldClick" />
         </el-header>
         <el-container class="page-content">
           <el-main><router-view /></el-main>
@@ -21,9 +20,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// import HyNavMenu from '/@/components/nav-menu'
-
-// import HyNavHeader from '/@/components/nav-header'
+import NavMenu from './NavMemu.vue'
+import NavHeader from './nav-header/nav-header.vue'
 
 const isCollapse = ref<Boolean>(false)
 

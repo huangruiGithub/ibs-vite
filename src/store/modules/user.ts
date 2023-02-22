@@ -1,13 +1,48 @@
 import { defineStore } from 'pinia'
-import { login, getInfo } from '/@/api/user'
+import { login, getInfo, logout } from '/@/api/user'
 import { getToken, setToken, removeToken } from '/@/utils/auth'
+import type { RouteMeta } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { resetRouter } from '/@/router'
+import { localCache } from '/@/utils/cache'
 interface loginInfoType {
   account: string,
   password: string
 }
+interface uesrInfoType {
+  account: string,
+  lastLoginTime: string,
+  password: string,
+  userId: number,
+  userName: string,
+  roleId?: number
+}
+interface loginResType {
+  token: string,
+  updates: any[],
+  user: uesrInfoType
+}
+interface rightsType {
+  icon: string,
+  alwaysShow: boolean,
+  children: rightsType[],
+  component: string,
+  meta: {
+    icon: string,
+    image: string,
+    noCache: boolean,
+    title: string,
+  },
+  name: string,
+  path: string,
+  rightType: number,
 
+}
 
+interface stateType {
+  token?: string,
+  rights: rightsType[]
+}
 export function setupUser() {
   const userStore = useUserStore()
 
@@ -34,9 +69,9 @@ export function setupUser() {
 }
 export const useUserStore = defineStore({
   id: 'role',
-  state: () => ({
-    entireRoles: [],
+  state: (): stateType => ({
     token: getToken(),
+    rights: localCache.getItem('ibsRouter')
   }),
   getters: {
   },
@@ -46,15 +81,16 @@ export const useUserStore = defineStore({
       const { account, password } = userInfo
       return new Promise((resolve, reject) => {
         login({ account: account.trim(), password: password })
-          .then((response: any) => {
+          .then(async (response: any) => {
             console.log(response,)
-            this.token = response.data.user.roleId
+            const loginRes: loginResType = response.data
+            this.token = String(loginRes.user.roleId)
             // localStorage.setItem('single_token', encodeURIComponent(response.data.token))
             // localStorage.setItem('account', encodeURIComponent(response.data.user.account))
             // localStorage.setItem('password', encodeURIComponent(response.data.user.password))
-            setToken(response.data.user.userId)
-
-            resolve(response)
+            setToken(loginRes.user.userId)
+            await this.getInfo()
+            resolve(loginRes)
           })
           .catch((error: any) => {
             reject(error)
@@ -70,6 +106,9 @@ export const useUserStore = defineStore({
             const id = response.data.user.userId
             const hasUpdateRole = response.data.hasUpdateRole
             const rights = response.data.rights
+            localCache.setItem('ibsRouter', rights)// 存储路由到localStorage
+            this.rights = rights
+            console.log(rights, 'rightsrightsrights')
             // if (hasUpdateRole) {
             //   resetRouter()
             // }
@@ -85,6 +124,22 @@ export const useUserStore = defineStore({
             resolve(rights)
           })
           .catch((error: any) => {
+            reject(error)
+          })
+      })
+    },
+    logout() {
+      return new Promise((resolve, reject): void => {
+        // removeToken()
+        logout()
+          .then(() => {
+            removeToken() // must remove  token  first
+            resetRouter()
+            localCache.removeItem('ibsRouter')
+            this.$reset()
+            resolve('')
+          })
+          .catch((error) => {
             reject(error)
           })
       })
