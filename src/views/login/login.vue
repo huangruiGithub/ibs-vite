@@ -55,7 +55,7 @@
 import md5 from 'js-md5'
 import { watch, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '/@/store/modules/user'
+import { useUserStore } from '@/store/modules/user'
 const loading = ref(false)
 //路由
 const redirect = ref()

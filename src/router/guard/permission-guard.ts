@@ -1,14 +1,14 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
-import { useUserStore } from '/@/store/modules/user'
+import { useUserStore } from '@/store/modules/user'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '/@/utils/auth' // get token from cookie
-import getPageTitle from '/@/utils/get-page-title'
+import { getToken } from '@/utils/auth' // get token from cookie
+import getPageTitle from '@/utils/get-page-title'
 // const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法
-import Layout from '/@/views/layout/layout.vue' // Layout 是架构组件，不在后台返回，在文件里单独引入
-import error from '/@/views/404page/index.vue'
-import { localCache } from '/@/utils/cache'
+import Layout from '@/views/layout/layout.vue' // Layout 是架构组件，不在后台返回，在文件里单独引入
+import NotFound from '@/views/not-found/not-found.vue'
+import { localCache } from '@/utils/cache'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -98,7 +98,7 @@ function filterAsyncRouter(asyncRouterMap: any) {
           route.component = () => import(`../../views/${route.component}.vue`)
 
         } catch {
-          route.component = error
+          route.component = NotFound
         }
       }
     } else {

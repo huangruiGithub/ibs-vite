@@ -43,8 +43,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '/@/router'
-import { useUserStore } from '/@/store/modules/user'
+import router from '@/router'
+import { useUserStore } from '@/store/modules/user'
 const currentActiveMenuIndex = ref('')
 const props = {
   collapse: {
@@ -54,14 +54,23 @@ const props = {
 }
 const menus = useUserStore().rights
 const handleItemClick = (menu: any) => {
-  console.log(menu)
+  function getViews(path: string) {
+    // 首先把你需要动态路由的组件地址全部获取
+    let modules = import.meta.glob('../../views/**/*.vue')
+    console.log(modules)
+    // 然后动态路由的时候这样来取
+    return modules['../' + path + '.vue']
+  }
+
+  // router.push({ name: menu.name })
+  console.log(menu.component, import(`@/views/${menu.component}.vue`))
 }
 const logoClick = () => {
   console.log(menus)
 }
 </script>
 <style scoped lang="less">
-@import '/@/styles/_var.less';
+@import '@/styles/_var.less';
 // 混合
 .selectActiveColor {
   color: white !important;

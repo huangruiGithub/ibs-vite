@@ -6,13 +6,13 @@ let routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'login',
     //使用import可以路由懒加载，如果不使用，太多组件一起加载会造成白屏
-    component: () => import('/@/views/login/login.vue')
+    component: () => import('@/views/login/login.vue')
   },
 
   {
     path: '/404',
     name: 'notFound',
-    component: () => import('/@/views/not-found/not-found.vue')
+    component: () => import('@/views/not-found/not-found.vue')
   }
   //{
   //配置404页面

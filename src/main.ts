@@ -6,7 +6,7 @@ import './styles/index.less' // global css
 import App from './App.vue'
 import store from './store'
 import router from './router/index'
-import { setupRouterGuard } from '/@/router/guard/index'
+import { setupRouterGuard } from '@/router/guard/index'
 const app = createApp(App)
 app.use(store)
 app.use(router)

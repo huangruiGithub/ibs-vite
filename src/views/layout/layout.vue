@@ -21,7 +21,7 @@
 import { ref } from 'vue'
 
 import NavMenu from './NavMemu.vue'
-import NavHeader from './nav-header/nav-header.vue'
+import NavHeader from './nav-header/NavHeader.vue'
 
 const isCollapse = ref<Boolean>(false)
 
@@ -33,7 +33,7 @@ const handleFoldClick = (isFold: Boolean) => {
 </script>
 
 <style scoped lang="less">
-@import '/@/styles/_var.less';
+@import '@/styles/_var.less';
 
 .main {
   position: fixed;

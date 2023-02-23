@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { login, getInfo, logout } from '/@/api/user'
-import { getToken, setToken, removeToken } from '/@/utils/auth'
+import { login, getInfo, logout } from '@/api/user'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 import type { RouteMeta } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { resetRouter } from '/@/router'
-import { localCache } from '/@/utils/cache'
+import { resetRouter } from '@/router'
+import { localCache } from '@/utils/cache'
 interface loginInfoType {
   account: string,
   password: string
