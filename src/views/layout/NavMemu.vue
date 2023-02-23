@@ -49,24 +49,15 @@ const currentActiveMenuIndex = ref('')
 const props = {
   collapse: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 }
 const menus = useUserStore().rights
 const handleItemClick = (menu: any) => {
-  function getViews(path: string) {
-    // 首先把你需要动态路由的组件地址全部获取
-    let modules = import.meta.glob('../../views/**/*.vue')
-    console.log(modules)
-    // 然后动态路由的时候这样来取
-    return modules['../' + path + '.vue']
-  }
-
-  // router.push({ name: menu.name })
-  console.log(menu.component, import(`@/views/${menu.component}.vue`))
+  router.push({ name: menu.name })
 }
 const logoClick = () => {
-  console.log(menus)
+  console.log()
 }
 </script>
 <style scoped lang="less">

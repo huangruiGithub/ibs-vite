@@ -79,6 +79,7 @@ function routerGo(to: any, next: any, router: Router) {
   routes = filterAsyncRouter(routes) // 过滤路由
   routes.push(page404)
   for (const item of routes) {
+    console.log(item,'itemcompionents')
     router.addRoute(item)
   }
   next({ ...to, replace: true })
@@ -88,18 +89,20 @@ function routerGo(to: any, next: any, router: Router) {
 
 function filterAsyncRouter(asyncRouterMap: any) {
   // 遍历后台传来的路由字符串，转换为组件对象
+  asyncRouterMap = JSON.parse(JSON.stringify(asyncRouterMap))
   const accessedRouters = asyncRouterMap.filter((route: any) => {
     if (route.component) {
       if (route.component === 'Layout') {
         // Layout组件特殊处理
         route.component = Layout
       } else {
-        try {
-          route.component = () => import(`../../views/${route.component}.vue`)
-
-        } catch {
-          route.component = NotFound
+        function getViews(path: string) {
+          // 首先把你需要动态路由的组件地址全部获取
+          let modules = import.meta.glob('../../**/*.vue')
+          // 然后动态路由的时候这样来取
+          return modules['../../views/' + path + '/index.vue']
         }
+          route.component =  getViews(route.component)
       }
     } else {
       route.component = {
