@@ -19,7 +19,7 @@ export interface tableLabelType {
 export interface propsType {
   tableLabel: tableLabelType[]
   tableData: any[]
-  pagination?: number
+  pagination?: boolean
   currentPage?: number
   pageSize?: number
   tableTotalSize?: number

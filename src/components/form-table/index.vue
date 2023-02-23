@@ -134,36 +134,24 @@ import type {
   selectOptionType,
   tagOptionType,
   indexType,
-  tableLabelType,
-  propsType
+  tableLabelType
 } from './type'
-const pro = {
-  tableLabel: {
-    type: Array,
-    default: () => []
-  },
-  tableData: {
-    type: Array,
-    default: () => []
-  },
-  currentPage: {
-    type: Number,
-    default: 1
-  },
-  pageSize: {
-    type: Number,
-    default: 10
-  },
-  tableTotalSize: {
-    type: Number,
-    default: null
-  },
-  pagination: {
-    type: Boolean,
-    default: false
-  }
+interface propsType {
+  tableLabel: tableLabelType[]
+  tableData: any[]
+  pagination?: boolean
+  currentPage?: number
+  pageSize?: number
+  tableTotalSize?: number
 }
-const props = defineProps<propsType>()
+const props = withDefaults(defineProps<propsType>(), {
+  tableData: () => [],
+  tableLabel: () => [],
+  currentPage: 1,
+  pageSize: 10,
+  tableTotalSize: 0,
+  pagination: false
+})
 const key = ref(Math.random())
 watch(
   () => props.tableLabel,
