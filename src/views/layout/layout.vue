@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <el-aside :width="isCollapse ? '62px' : '210px'">
+      <el-aside :width="isCollapse ? '62px' : '240px'">
         <NavMenu :collapse="isCollapse" />
       </el-aside>
 
@@ -10,7 +10,10 @@
           <nav-header @foldClick="handleFoldClick" />
         </el-header>
         <el-container class="page-content">
-          <el-main><router-view /></el-main>
+          <el-main>
+            <FormTable />
+            <router-view
+          /></el-main>
         </el-container>
       </el-container>
     </el-container>
@@ -22,7 +25,7 @@ import { ref } from 'vue'
 
 import NavMenu from './NavMemu.vue'
 import NavHeader from './nav-header/NavHeader.vue'
-
+import FormTable from '@/components/form-table/test.vue'
 const isCollapse = ref<Boolean>(false)
 
 const handleFoldClick = (isFold: Boolean) => {
@@ -46,6 +49,12 @@ const handleFoldClick = (isFold: Boolean) => {
 .main-content,
 .page {
   height: 100%;
+  .page-header {
+    border-bottom: 1px solid #d8dce5;
+  }
+  .el-header {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) !important;
+  }
 }
 
 .page-content {
@@ -81,8 +90,8 @@ const handleFoldClick = (isFold: Boolean) => {
 }
 
 .el-main {
-  color: #333;
-  text-align: center;
-  background-color: #f0f2f5;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
 }
 </style>

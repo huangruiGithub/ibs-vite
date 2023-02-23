@@ -10,7 +10,7 @@
       :default-active="currentActiveMenuIndex"
       :collapse="!props.collapse"
       background-color="#001529"
-      text-color="#B7BDC3"
+      text-color="#eee"
       active-text-color="#fff"
     >
       <template v-for="menu in menus" :key="menu.id">
