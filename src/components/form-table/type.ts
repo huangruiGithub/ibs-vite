@@ -2,9 +2,10 @@ export type selectOptionType = { label: string; value: string | number; type?: s
 export type tagOptionType = { label: string; value: string | number; type?: string }
 export type indexType = (index: number) => any | number
 export interface tableLabelType {
-  prop: string
-  label: string
+  prop?: string
+  label?: string
   type?: string
+  align?: string
   columnKey?: string
   showOverflowTooltip?: boolean
   otherProps?: any

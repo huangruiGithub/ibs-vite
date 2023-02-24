@@ -47,7 +47,7 @@
         @paginationChange="getTableData"
         @selection-change="handleSelectionChange"
       >
-        <template #files="slotProps">
+        <!-- <template #files="slotProps">
           <el-link
             v-if="slotProps.row.files.path"
             type="primary"
@@ -56,7 +56,7 @@
           >
             下载附件
           </el-link>
-        </template>
+        </template> -->
         <template #operation="slotProps">
           <!-- <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link> -->
           <el-link
@@ -103,6 +103,7 @@ import {
 import { ElMessage, ElMessageBox } from 'element-plus'
 // import { download } from '@/api/resource-management'
 // import { fileDownload } from '@/utils/download.js'
+import type { tableLabelType } from '@/components/form-table/type'
 import _ from 'loadsh'
 // 过滤
 interface filterDataType {
@@ -115,12 +116,16 @@ const filterData = reactive<filterDataType>({
   endpointName: '',
   protocolType: ''
 })
+
 // 获取数据
 const formTable = ref()
 const tableData = ref([])
 const paginationData = reactive({ currentPage: 1, pageSize: 10 })
 const tableTotalSize = ref(0)
-const options = reactive({ apiTypeOptions: [] })
+const options: { apiTypeOptions: { label: string; value: number | string }[] } =
+  reactive({
+    apiTypeOptions: []
+  })
 const isLoading = ref(false)
 const getTableData = _.throttle(() => {
   isLoading.value = true
@@ -178,7 +183,9 @@ const batchDeleteClick = () => {
       type: 'warning'
     }).then(() => {
       console.log('删除', selectItems.value)
-      const endpointIds = selectItems.value.map(({ endpointId }) => endpointId)
+      const endpointIds = selectItems.value.map(
+        ({ endpointId }: { endpointId: number }) => endpointId
+      )
       deleteThreePartyEndpoint({ endpointIds }).then(() => {
         if (
           tableData.value.length === endpointIds.length &&
@@ -247,7 +254,7 @@ const editClcik = (data: any) => {
 //   detailForms.value.showPreview(fromData)
 // }
 // 表格配置
-const tableLabel = computed(() => [
+const tableLabel = computed((): tableLabelType[] => [
   {
     type: 'selection',
     align: 'center'

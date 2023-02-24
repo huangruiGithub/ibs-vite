@@ -24,7 +24,7 @@
             v-bind="item"
           />
           <el-table-column
-            v-if="item.type !== 'selection'"
+            v-if="item.type !== 'selection' && item.prop"
             :key="item.label || item.type"
             :column-key="item.columnKey ? item.columnKey : item.prop"
             :show-overflow-tooltip="item.showOverflowTooltip ?? true"
@@ -184,7 +184,8 @@ const dataValue = computed(() => (scope: any, label: tableLabelType) => {
   if (typeof label.valueFormat === 'function') {
     return label.valueFormat(scope, label)
   } else {
-    return scope.row[label.prop]
+    const key: string = label.prop as string
+    return scope.row[key]
   }
 })
 

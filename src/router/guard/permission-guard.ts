@@ -99,6 +99,7 @@ function filterAsyncRouter(asyncRouterMap: any) {
         function getViews(path: string) {
           // 首先把你需要动态路由的组件地址全部获取
           let modules = import.meta.glob('../../**/*.vue')
+          console.log(path, modules['../../views/' + path + '.vue'])
           // 然后动态路由的时候这样来取
           return modules['../../views/' + path + '.vue']
         }

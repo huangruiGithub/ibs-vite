@@ -80,7 +80,7 @@ const handleLogin = () => {
     userStore
       .login({ ...loginForm, password: md5(loginForm.password) })
       .then(() => {
-        router.push('/eoms')
+        router.push('/resource-management/thirdparty-api-management')
       })
   })
 
