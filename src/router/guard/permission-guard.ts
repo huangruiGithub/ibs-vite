@@ -79,7 +79,7 @@ function routerGo(to: any, next: any, router: Router) {
   routes = filterAsyncRouter(routes) // 过滤路由
   routes.push(page404)
   for (const item of routes) {
-    console.log(item,'itemcompionents')
+    console.log(item, 'itemcompionents')
     router.addRoute(item)
   }
   next({ ...to, replace: true })
@@ -100,9 +100,9 @@ function filterAsyncRouter(asyncRouterMap: any) {
           // 首先把你需要动态路由的组件地址全部获取
           let modules = import.meta.glob('../../**/*.vue')
           // 然后动态路由的时候这样来取
-          return modules['../../views/' + path + '/index.vue']
+          return modules['../../views/' + path + '.vue']
         }
-          route.component =  getViews(route.component)
+        route.component = getViews(route.component)
       }
     } else {
       route.component = {

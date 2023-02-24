@@ -10,14 +10,12 @@
         auto-complete="on"
         label-position="right"
         label-width="70px"
-        size="midden"
       >
         <el-form-item prop="account" class="form-item" label="用户名">
           <el-input
             v-model="loginForm.account"
             placeholder="用户名"
             name="account"
-            size="midden"
             type="text"
             tabindex="1"
             auto-complete="on"
@@ -27,7 +25,6 @@
           <el-input
             ref="password"
             v-model="loginForm.password"
-            size="midden"
             show-password
             placeholder="密码"
             name="password"
@@ -38,7 +35,6 @@
         </el-form-item>
         <el-button
           :loading="loading"
-          size="midden"
           type="primary"
           class="loginBtn"
           round
@@ -54,33 +50,32 @@
 <script setup lang="ts">
 import md5 from 'js-md5'
 import { watch, ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 const loading = ref(false)
 //路由
 const redirect = ref()
-const currentRoute = reactive(useRouter().currentRoute.value)
 const router = reactive(useRouter())
+const route = useRoute()
 const userStore = useUserStore()
 const rules = {
   account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
 }
 watch(
   useRouter().currentRoute,
   (route) => {
-    redirect.value = route.query && route.query.redirect
+    redirect.value = route.query?.redirect
   },
-  { immediate: true },
+  { immediate: true }
 )
 //登录
 const loginForm = reactive({
   account: '',
-  password: '',
+  password: ''
 })
 const form = ref()
 const handleLogin = () => {
-  console.log('login')
   form.value.validate().then(() => {
     userStore
       .login({ ...loginForm, password: md5(loginForm.password) })

@@ -10,10 +10,7 @@
           <nav-header @foldClick="handleFoldClick" />
         </el-header>
         <el-container class="page-content">
-          <el-main>
-            <FormTable />
-            <router-view
-          /></el-main>
+          <el-main> <router-view /></el-main>
         </el-container>
       </el-container>
     </el-container>
@@ -25,7 +22,6 @@ import { ref } from 'vue'
 
 import NavMenu from './NavMemu.vue'
 import NavHeader from './nav-header/NavHeader.vue'
-import FormTable from '@/components/form-table/test.vue'
 const isCollapse = ref<Boolean>(false)
 
 const handleFoldClick = (isFold: Boolean) => {
