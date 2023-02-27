@@ -3,6 +3,13 @@ import type { RouteRecordRaw } from 'vue-router'
 
 let routes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/layout'
+  },{
+    path: '/layout',
+    component:() => import('@/views/layout/layout.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     //使用import可以路由懒加载，如果不使用，太多组件一起加载会造成白屏

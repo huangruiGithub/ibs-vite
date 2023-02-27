@@ -7,10 +7,10 @@
 
       <el-container class="page">
         <el-header class="page-header">
-          <nav-header @foldClick="handleFoldClick" />
+          <nav-header @foldChange="handleFoldClick" />
         </el-header>
         <el-container class="page-content">
-          <el-main> <router-view /></el-main>
+          <el-main><router-view /></el-main>
         </el-container>
       </el-container>
     </el-container>
@@ -20,14 +20,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import NavMenu from './NavMemu.vue'
+import NavMenu from './nav-menu/NavMemu.vue'
 import NavHeader from './nav-header/NavHeader.vue'
-const isCollapse = ref<Boolean>(false)
+const isCollapse = ref(false)
 
-const handleFoldClick = (isFold: Boolean) => {
-  // console.log('isFold=', isFold)
-
+const handleFoldClick = (isFold: boolean) => {
   isCollapse.value = isFold
+  console.log('isFold=', isCollapse.value)
 }
 </script>
 
