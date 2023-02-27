@@ -1,10 +1,6 @@
 <template>
   <div class="departmentTree">
-    <el-input
-      v-model="filterText"
-      placeholder="输入关键字进行过滤"
-      style="padding-bottom: 10px"
-    />
+    <el-input v-model="filterText" placeholder="输入关键字进行过滤" style="padding-bottom: 10px" />
     <el-tree
       ref="tree"
       :data="departmentTree"
@@ -17,120 +13,67 @@
       @node-click="nodeClick"
     >
       <template #default="{ node, data }">
-        <div
-          v-if="props.edit"
-          style="width: 100%; position: relative; bottom: 3px"
-          @mouseenter="mouseenter(data)"
-          @mouseleave="mouseleave(data)"
-        >
-          <el-icon>
-            <OfficeBuilding />
-          </el-icon>
-          <div class="treeLabel">{{ data.label }}</div>
-          <el-popover
-            id="popoverDiv"
-            :visible="data.popoverShow"
-            popper-class="departmentPopover"
-            placement="right"
-            :width="200"
+        <span>
+          <div
+            v-if="props.edit"
+            style="width: 100%; position: relative; bottom: 3px"
+            @mouseenter="mouseenter(data)"
+            @mouseleave="mouseleave(data)"
           >
-            <div>
-              <Close
-                class="popoverCloseIcon"
-                @click="data.popoverShow = false"
-              />
-            </div>
-            <ul v-show="popoverType === 'index'" class="popoverUl">
-              <li class="popoverItem" @click="popoverType = 'editName'">
-                修改名称
-              </li>
-              <li
-                v-show="data.areaName !== '' && !data.company"
-                class="popoverItem"
-                style="cursor: not-allowed; background-color: #efefef"
-              >
-                已设置地区:{{ data.areaName }}
-              </li>
-              <li
-                v-show="data.isTop && data.areaName === ''"
-                class="popoverItem"
-                @click="popoverType = 'editArea'"
-              >
-                设置地区
-              </li>
-              <li class="popoverItem" @click="clickAddDept">
-                {{ data.company ? '添加部门' : '添加子部门' }}
-              </li>
-              <li
-                v-show="!data.company"
-                class="popoverItem"
-                style="color: red"
-                @click="clickDeleteDept"
-              >
-                删除
-              </li>
-            </ul>
-            <div v-show="popoverType === 'editName'" class="editName">
-              <el-input v-model="editDeptName" placeholder="请输入部门名称" />
-              <el-button plain class="popoverBtn" @click="popoverType = 'index'"
-                >取 消</el-button
-              >
-              <el-button
-                type="primary"
-                class="popoverBtn"
-                @click="submitSetName(data)"
-                >确 定</el-button
-              >
-            </div>
-            <div v-show="popoverType === 'editArea'" class="editName">
-              <el-cascader
-                v-model="areaChoose"
-                :options="areaOptions"
-                placeholder="请选择地区"
-                :props="cascaderProps"
-              />
-              <el-button plain class="popoverBtn" @click="popoverType = 'index'"
-                >取 消</el-button
-              >
-              <el-button
-                type="primary"
-                class="popoverBtn"
-                @click="submitSetArea(data)"
-                >确 定</el-button
-              >
-            </div>
-            <template #reference>
-              <div style="display: inline-block">
-                <svg-icon
-                  v-show="data.show"
-                  icon-class="treeUnfold"
-                  class="iconTreeUnfold"
-                  @click="iconClick(data)"
-                />
-              </div>
-            </template>
-          </el-popover>
-        </div>
-        <div v-if="!edit">
-          <el-icon>
-            <OfficeBuilding />
-          </el-icon>
-          <span style="padding-left: 15px">{{ node.label }}</span>
-        </div>
+            <el-icon>
+              <OfficeBuilding />
+            </el-icon>
+            <div class="treeLabel">{{ data.label }}</div>
+            <el-popover
+              id="popoverDiv"
+              :visible="data.popoverShow"
+              popper-class="departmentPopover"
+              placement="right"
+              :width="200"
+            >
+              <span>
+                <div class="popover-close-icon-wrap">
+                  <Close class="popoverCloseIcon" @click="closeClick(data)" />
+                </div>
+                <ul v-show="popoverType === 'index'" class="popoverUl">
+                  <li class="popoverItem" @click="popoverType = 'editName'">修改名称</li>
+
+                  <li class="popoverItem" @click="clickAddDept">
+                    {{ data.company ? '添加部门' : '添加子部门' }}
+                  </li>
+                  <li v-show="!data.company" class="popoverItem" style="color: red" @click="clickDeleteDept">
+                    删除
+                  </li>
+                </ul>
+                <div v-show="popoverType === 'editName'" class="editName">
+                  <el-input v-model="editDeptName" style="width: 160px" placeholder="请输入部门名称" />
+                  <el-button plain class="popoverBtn" @click="popoverType = 'index'">取 消</el-button>
+                  <el-button type="primary" class="popoverBtn" @click="submitSetName(data)">确 定</el-button>
+                </div>
+              </span>
+              <template #reference>
+                <div v-if="data.show" style="display: inline-block">
+                  <el-icon>
+                    <MoreFilled style="transform: rotate(90deg)" @click="iconClick(data)" />
+                  </el-icon>
+                </div>
+              </template>
+            </el-popover>
+          </div>
+          <div v-if="!edit">
+            <el-icon>
+              <OfficeBuilding />
+            </el-icon>
+            <span style="padding-left: 15px">{{ node.label }}</span>
+          </div>
+        </span>
       </template>
     </el-tree>
-    <el-dialog
-      v-model="dialogVisible"
-      :title="dialogTitle"
-      width="400px"
-      :before-close="handleClose"
-    >
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="400px" :before-close="handleClose">
       <div class="formLabel">部门名称：</div>
       <el-input
         v-model="addDeptName"
-        :placeholder="
-          dialogTitle === '添加部门' ? '请输入部门名称' : '请输入子部门名称'
-        "
+        :placeholder="dialogTitle === '添加部门' ? '请输入部门名称' : '请输入子部门名称'"
         style="width: 250px"
       />
       <template #footer>
@@ -147,13 +90,12 @@ import {
   setDepartmentName,
   deleteDepartmentNode,
   getDepartmentNodeTree,
-  getAreaCode,
   setDepartmentArea
 } from '@/api/system-management'
 import { ref, reactive, watch } from 'vue'
 import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
 import { Close, OfficeBuilding } from '@element-plus/icons-vue'
-import { arrAssign, objAssign } from '@/utils/index'
+import { objAssign } from '@/utils/index'
 const emit = defineEmits(['nodeClick', 'getTreeData'])
 const props = defineProps({
   edit: {
@@ -200,52 +142,6 @@ const setTreeData = (data: any) => {
   }
 }
 init()
-//设置地区
-const areaOptions: any[] = reactive([])
-const areaChoose = ref<string[]>([])
-getAreaCode().then((res: any) => {
-  arrAssign(areaOptions, res.data)
-})
-const submitSetArea = (data: DepartmentDataProps) => {
-  if (areaChoose.value.length === 0) {
-    ElMessage({
-      type: 'info',
-      message: '选择地区必填!'
-    })
-    return
-  }
-  const obj = {
-    departmentId: data.id,
-    areaCode: areaChoose.value[areaChoose.value.length - 1]
-  }
-  console.log(areaChoose.value)
-  ElMessageBox.confirm(
-    '是否确认选择该地区，该地区信息作为获取当地气温数据的参数，确定后不可修改?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
-    .then(() => {
-      setDepartmentArea(obj).then(() => {
-        ElNotification({
-          title: '成功',
-          message: '设置部门地区成功',
-          type: 'success'
-        })
-        popoverHide()
-        init()
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '已取消设置'
-      })
-    })
-}
 //编辑名称
 const setParentId = ref(0)
 const editDeptName = ref('')
@@ -283,6 +179,12 @@ const submitSetName = (data: DepartmentDataProps) => {
     })
   }
 }
+const closeClick = (data: any) => {
+  data.show = false
+  popoverType.value = 'index'
+  popoverNode.id = null
+  data.popoverShow = false
+}
 const findPearntId = (treeData: any[], id: number | null) => {
   for (const item of treeData) {
     if (item.id === id) {
@@ -315,15 +217,11 @@ const clickAddDept = () => {
   addNode = popoverNode
 }
 const clickDeleteDept = () => {
-  ElMessageBox.confirm(
-    '此操作将永久删除该"' + popoverNode.label + '"与其子部门, 是否确定要删除?',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
+  ElMessageBox.confirm('此操作将永久删除该"' + popoverNode.label + '"与其子部门, 是否确定要删除?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
     .then(() => {
       popoverNode.id &&
         deleteDepartmentNode(popoverNode.id).then(() => {
@@ -381,6 +279,7 @@ const nodeClick = (node: any) => {
   editDeptName.value = ''
   addDeptName.value = ''
   emit('nodeClick', node)
+  console.log('nodeClick', node)
 }
 const mouseenter = (node: DepartmentDataProps) => {
   node['show'] = true
@@ -417,7 +316,8 @@ const iconClick = (data: DepartmentDataProps) => {
 .popoverCloseIcon {
   height: 15px;
   width: 15px;
-  margin: 3px;
+  margin-top: 5px;
+  // margin: 3px;
   margin-left: 175px;
   // right: 0px;
   // position: absolute;
@@ -427,7 +327,8 @@ const iconClick = (data: DepartmentDataProps) => {
   padding: 0px !important;
   .popoverUl {
     margin: 0;
-    padding: 0px;
+    padding: 0;
+    padding-bottom: 16px;
     .popoverItem {
       list-style-type: none !important;
       padding: 0 15px;
@@ -492,9 +393,7 @@ const iconClick = (data: DepartmentDataProps) => {
       line-height: 2.5rem;
       font-size: 16px;
     }
-    .el-tree--highlight-current
-      .el-tree-node.is-current
-      > .el-tree-node__content {
+    .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
       background: #ecf5ff;
     }
   }
@@ -523,5 +422,10 @@ const iconClick = (data: DepartmentDataProps) => {
 .formLabel {
   display: inline-block;
   margin-bottom: 20px;
+}
+.popover-close-icon-wrap {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
 }
 </style>

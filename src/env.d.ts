@@ -10,3 +10,5 @@ declare module '*.vue' {
 
 declare module '*.mjs'
 declare module 'loadsh'
+declare module 'html2canvas'
+

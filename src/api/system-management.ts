@@ -79,7 +79,7 @@ export function deleteDepartmentNode(departmentId: number) {
 }
 export function getAreaCode() {
   return request.request({
-    url: 'district/loadTree',
+    url: 'department/loadTree',
     method: 'get'
   })
 }

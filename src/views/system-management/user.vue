@@ -2,8 +2,9 @@
   <el-row style="height: 100%">
     <el-col :span="6" style="height: 100%">
       <MainPage title="组织树">
-        <DepartmentTree :edit="true" @getTreeData="getTreeData" /></MainPage
-    ></el-col>
+        <DepartmentTree :edit="true" @nodeClick="getTableData" />
+      </MainPage>
+    </el-col>
     <el-col :span="18" style="height: 100%; border-left: 1px solid #dcdee0">
       <MainPage title="用户列表">
         <div class="content">
@@ -14,22 +15,17 @@
               style="width: 240px; margin-right: 12px"
               placeholder="请输入接口名称"
             ></el-input>
-            <el-button type="primary" @click="getTableData">搜索</el-button>
+            <el-button type="primary" @click="getTableData()">搜索</el-button>
 
-            <el-button
-              type="primary"
-              style="margin-left: auto"
-              @click="command('')"
-              >新增</el-button
-            >
+            <el-button type="primary" style="margin-left: auto" @click="command('')">新增</el-button>
           </div>
           <div v-loading="isLoading" class="table-wrap">
             <FormTable
               ref="formTable"
               :table-label="tableLabel"
               :table-data="tableData"
-              :current-page.sync="paginationData.currentPage"
-              :page-size.sync="paginationData.pageSize"
+              v-model:current-page="paginationData.currentPage"
+              v-model:page-size="paginationData.pageSize"
               :table-total-size="tableTotalSize"
               pagination
               selection
@@ -47,12 +43,7 @@
         </template> -->
               <template #operation="slotProps">
                 <!-- <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link> -->
-                <el-link
-                  type="primary"
-                  :underline="false"
-                  @click="editClcik(slotProps.row)"
-                  >修改</el-link
-                >
+                <el-link type="primary" :underline="false" @click="editClcik(slotProps.row)">修改</el-link>
 
                 <!-- <el-link
               slot="reference"
@@ -94,10 +85,9 @@ const formTable = ref()
 const tableData = ref([])
 const paginationData = reactive({ currentPage: 1, pageSize: 10 })
 const tableTotalSize = ref(0)
-const options: { apiTypeOptions: { label: string; value: number | string }[] } =
-  reactive({
-    apiTypeOptions: []
-  })
+const options: { apiTypeOptions: { label: string; value: number | string }[] } = reactive({
+  apiTypeOptions: []
+})
 const getTreeData = (treeData: any) => {
   // objAssign(orgChartData, treeData)
   // if (show.value) {
@@ -112,10 +102,12 @@ const getTreeData = (treeData: any) => {
   // }, 100)
 }
 const isLoading = ref(false)
-const getTableData = _.throttle(() => {
+const getTableData = _.throttle((data?: any) => {
   isLoading.value = true
+  const departmentId = data?.id === 100 ? undefined : data?.id
   getUser({
     params: {
+      departmentId,
       ...filterData
     },
     sort: {},
