@@ -10,6 +10,8 @@ import { setupRouterGuard } from '@/router/guard/index'
 import FormTable from '@/components/form-table/index.vue'
 import MainPage from '@/components/main-page/index.vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import 'virtual:svg-icons-register'
+import SvgIcon from '@/components/SvgIcon/index.vue' // svg component
 
 import vue3TreeOrg from 'vue3-tree-org';
 import "vue3-tree-org/lib/vue3-tree-org.css";
@@ -24,5 +26,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.component('MainPage', MainPage)
 app.component('FormTable', FormTable)
+app.component('SvgIcon', SvgIcon)
 setupRouterGuard()
 app.mount('#app')

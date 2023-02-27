@@ -20,6 +20,7 @@
           :index="menu.name"
           @click="handleItemClick(menu)"
         >
+          <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
           <i :class="menu.meta.icon"></i>
           <!-- 这个标签不能删，折叠效果需要菜单需要 -->
           <span>{{ menu.meta.title }}</span>
@@ -28,6 +29,7 @@
         <!-- 2.包含二级菜单 -->
         <el-sub-menu v-else :index="menu.name">
           <template #title>
+            <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
             <i :class="menu.icon"></i>
             <span>{{ menu.meta.title }}</span>
           </template>
@@ -86,7 +88,7 @@ const logoClick = () => {
     }
 
     .title {
-      font-size: 16px;
+      font-size: 1px;
       font-weight: 700;
       color: white;
     }
@@ -102,6 +104,7 @@ const logoClick = () => {
       // 二级菜单 ( 默认背景 )
       .el-menu-item {
         padding-left: 50px !important;
+        font-size: 20px !important;
         background-color: @side-lighten-bg-color !important;
       }
     }
@@ -129,5 +132,8 @@ const logoClick = () => {
       background-color: @side-sel-bg-color !important;
     }
   }
+}
+.memu-icon {
+  padding-right: 5px;
 }
 </style>
