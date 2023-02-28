@@ -1,9 +1,5 @@
 <template>
   <div class="sile-menu">
-    <div class="logo" @click="logoClick">
-      <img class="img" src="https://cn.vitejs.dev/logo.svg" alt="logo" />
-      <span v-show="!props.collapse" class="title">Vue3Admin</span>
-    </div>
     <el-menu
       class="el-menu-vertical"
       :unique-opened="false"
@@ -15,23 +11,25 @@
     >
       <template v-for="menu in menus" :key="menu.id">
         <!-- 1.只有一级菜单  -->
-        <el-menu-item
+        <!-- <el-menu-item
           v-if="!(menu.children && menu.children.length)"
           :index="menu.name"
           @click="handleItemClick(menu)"
         >
           <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
           <i :class="menu.meta.icon"></i>
-          <!-- 这个标签不能删，折叠效果需要菜单需要 -->
+          这个标签不能删，折叠效果需要菜单需要
           <span>{{ menu.meta.title }}</span>
-        </el-menu-item>
+        </el-menu-item> -->
 
         <!-- 2.包含二级菜单 -->
         <!-- <SubMenu v-else :menu="menu" /> -->
-        <el-sub-menu v-else :index="menu.name">
+        <el-sub-menu :index="menu.name">
           <template #title>
-            <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
-            <i :class="menu.icon"></i>
+            <el-icon>
+              <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
+            </el-icon>
+
             <span>{{ menu.meta.title }}</span>
           </template>
           <template v-for="cmenu in menu.children" :key="cmenu.id">
@@ -76,25 +74,6 @@ const logoClick = () => {
   // width: 100%;
 
   // logo 布局
-  .logo {
-    display: flex;
-    height: 28px;
-    padding: 12px 10px 8px 10px;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-
-    .img {
-      height: 100%;
-      margin: 0 10px;
-    }
-
-    .title {
-      font-size: 1px;
-      font-weight: 700;
-      color: white;
-    }
-  }
 
   .el-menu-vertical {
     // 没有设置100%, 右边会突出（因为子布局比父亲大）

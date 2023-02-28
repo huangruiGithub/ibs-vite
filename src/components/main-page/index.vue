@@ -31,6 +31,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .main-page {
   height: 100%;
+  background-color: #eee;
   > .title {
     padding: 0 24px;
     height: 64px;

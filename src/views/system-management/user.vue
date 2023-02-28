@@ -1,5 +1,5 @@
 <template>
-  <el-row style="height: 100%">
+  <el-row style="height: 100%; margin: 0; padding: 0">
     <el-col :span="6" style="height: 100%">
       <MainPage title="组织树">
         <DepartmentTree :edit="true" @nodeClick="getTableData" />
