@@ -1,8 +1,9 @@
 <template>
   <el-sub-menu :index="menu.name">
     <template #title>
-      <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
-      <i :class="menu.icon"></i>
+      <el-icon size="22px" v-if="menu.meta.icon">
+        <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
+      </el-icon>
       <span>{{ menu.meta.title }}</span>
     </template>
     <template v-for="cmenu in menu.children" :key="cmenu.id">
@@ -23,72 +24,22 @@ const handleItemClick = (menu: any) => {
 <style scoped lang="less">
 @import '@/styles/_var.less';
 // 混合
-.selectActiveColor {
-  color: white !important;
+
+.el-menu-item.is-active {
+  background-color: var(--el-color-primary);
 }
-
-.sile-menu {
-  height: 100%;
-  // width: 100%;
-
-  // logo 布局
-  .logo {
-    display: flex;
-    height: 28px;
-    padding: 12px 10px 8px 10px;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-
-    .img {
-      height: 100%;
-      margin: 0 10px;
-    }
-
-    .title {
-      font-size: 1px;
-      font-weight: 700;
-      color: white;
-    }
+.el-sub-menu {
+  .el-menu-item {
+    padding-left: 50px !important;
   }
 
-  .el-menu-vertical {
-    // 没有设置100%, 右边会突出（因为子布局比父亲大）
-    width: 100%;
-    border-right: none;
+  .el-menu-item:hover {
+    color: #fff;
+    background-color: var(--el-color-primary);
+  }
 
-    // 目录
-    .el-submenu {
-      // 二级菜单 ( 默认背景 )
-      .el-menu-item {
-        padding-left: 50px !important;
-        font-size: 20px !important;
-        background-color: @side-lighten-bg-color !important;
-      }
-    }
-
-    // hover 高亮
-    .el-menu-item:hover {
-      .selectActiveColor(); // 菜单
-    }
-
-    .el-menu-item:hover i::before {
-      .selectActiveColor(); // 菜单 icon
-    }
-
-    .el-submenu__title:hover span {
-      .selectActiveColor(); // 目录
-    }
-
-    .el-submenu__title:hover i::before {
-      .selectActiveColor(); // 目录 icon
-    }
-
-    // 二级菜单选中
-    .el-menu-item.is-active {
-      color: white !important;
-      background-color: @side-sel-bg-color !important;
-    }
+  .el-menu-item.is-active {
+    background-color: var(--el-color-primary);
   }
 }
 .memu-icon {
