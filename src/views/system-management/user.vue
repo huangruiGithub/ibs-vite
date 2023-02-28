@@ -202,6 +202,7 @@ const tableLabel = computed((): tableLabelType[] => [
   height: 100%;
   display: flex;
   flex-direction: column;
+
   .search {
     display: flex;
     align-items: center;

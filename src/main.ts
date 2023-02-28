@@ -11,6 +11,7 @@ import FormTable from '@/components/form-table/index.vue'
 import MainPage from '@/components/main-page/index.vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'virtual:svg-icons-register'
+import '@/styles/normalize.css';
 import SvgIcon from '@/components/SvgIcon/index.vue' // svg component
 
 import vue3TreeOrg from 'vue3-tree-org';

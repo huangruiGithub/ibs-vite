@@ -32,13 +32,8 @@
           >
             <template #default="scope">
               <span v-if="item.type === 'input'" class="type-input">
-                <el-input
-                  v-model.trim="scope.row[item.prop]"
-                  v-bind="item.otherProps"
-                >
-                  <template v-if="item.unit" slot="append">{{
-                    item.unit
-                  }}</template>
+                <el-input v-model.trim="scope.row[item.prop]" v-bind="item.otherProps">
+                  <template v-if="item.unit" slot="append">{{ item.unit }}</template>
                 </el-input>
               </span>
               <component
@@ -47,11 +42,7 @@
                 v-model="scope.row[item.prop]"
                 v-bind="item.otherProps"
               ></component>
-              <el-select
-                v-else-if="item.type === 'select'"
-                v-model="scope.row[item.prop]"
-                placeholder="请选择"
-              >
+              <el-select v-else-if="item.type === 'select'" v-model="scope.row[item.prop]" placeholder="请选择">
                 <el-option
                   v-for="selectOption in item.selectOptions"
                   :key="selectOption.value"
@@ -64,9 +55,7 @@
               </span>
               <el-tag
                 v-else-if="
-                  item.type === 'tag' &&
-                  tagValue(item.tagOptions, scope.row[item.prop])?.label !==
-                    undefined
+                  item.type === 'tag' && tagValue(item.tagOptions, scope.row[item.prop])?.label !== undefined
                 "
                 v-bind="item.otherProps"
                 :type="tagValue(item.tagOptions, scope.row[item.prop])?.type"
@@ -90,19 +79,9 @@
                 v-else-if="item.type === 'time'"
                 v-html="formatterDate(scope.row[item.prop], item.format)"
               ></span>
-              <slot
-                v-else-if="item.type === 'slot'"
-                :name="item.prop"
-                v-bind="scope"
-                :label="item"
-              />
+              <slot v-else-if="item.type === 'slot'" :name="item.prop" v-bind="scope" :label="item" />
 
-              <slot
-                v-else-if="item.type === 'expand'"
-                name="expand"
-                v-bind="scope"
-                :label="item"
-              />
+              <slot v-else-if="item.type === 'expand'" name="expand" v-bind="scope" :label="item" />
               <span v-else v-html="dataValue(scope, item)"></span>
             </template>
           </el-table-column>
@@ -130,12 +109,7 @@
 import dayjs from 'dayjs'
 import { defineProps, computed, ref, defineExpose, watch } from 'vue'
 // import _ from 'lodash'
-import type {
-  selectOptionType,
-  tagOptionType,
-  indexType,
-  tableLabelType
-} from './type'
+import type { selectOptionType, tagOptionType, indexType, tableLabelType } from './type'
 interface propsType {
   tableLabel: tableLabelType[]
   tableData: any[]
@@ -160,22 +134,15 @@ watch(
     console.log(newval, preval, 'watchtablelabel')
   }
 )
-const selectValue = computed(
-  () => (options?: selectOptionType[], value?: string) => {
-    const item = options?.find((item) => item.value === value)
-    return item?.label ?? ''
-  }
-)
+const selectValue = computed(() => (options?: selectOptionType[], value?: string) => {
+  const item = options?.find((item) => item.value === value)
+  return item?.label ?? ''
+})
 const tagValue = computed(() => (options?: tagOptionType[], value?: string) => {
-  const item: tagOptionType | undefined = options?.find(
-    (item) => item.value === value
-  )
+  const item: tagOptionType | undefined = options?.find((item) => item.value === value)
   return item
 })
-const tableIndex = computed(
-  () => (index: number, formatterFn?: indexType) =>
-    formatterFn?.(index) ?? index
-)
+const tableIndex = computed(() => (index: number, formatterFn?: indexType) => formatterFn?.(index) ?? index)
 const formatterDate = computed(() => (date: any, format?: string) => {
   format = format ?? 'YYYY-MM-DD<br>HH:mm:ss'
   return date ? dayjs(date).format(format) : ''
@@ -189,12 +156,7 @@ const dataValue = computed(() => (scope: any, label: tableLabelType) => {
   }
 })
 
-const emit = defineEmits([
-  'getTableData',
-  'paginationChange',
-  'update:currentPage',
-  'update:pageSize'
-])
+const emit = defineEmits(['getTableData', 'paginationChange', 'update:currentPage', 'update:pageSize'])
 // 页面条数回调函数
 const pageSizeChange = (val: number) => {
   emit('update:pageSize', val)
