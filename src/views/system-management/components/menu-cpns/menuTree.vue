@@ -10,11 +10,16 @@
     <el-tree
       ref="treeRef"
       class="filter-tree"
-      :data="data"
+      :data="treeData"
       :props="defaultProps"
       default-expand-all
       :filter-node-method="filterNode"
-    />
+    >
+      <template v-slot="slotData">
+        <el-icon><OfficeBuilding /></el-icon>
+        <span>{{ slotData.data.label }}</span>
+      </template>
+    </el-tree>
   </div>
 </template>
 
@@ -46,7 +51,7 @@ const filterNode = (value: string, data: Tree) => {
   return data.label.includes(value)
 }
 
-const data: Tree[] = [
+const treeData: Tree[] = [
   {
     id: 1,
     label: 'Level one 1',

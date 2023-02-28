@@ -13,19 +13,41 @@
       </div>
     </div>
     <div class="right comm-border">
-      <div class="right-bd">
+      <div class="right-hd">
         <div class="comm-title">
           <span class="line"></span>
           <span class="title">菜单架构图</span>
           <div class="btns"><el-button size="small">下载</el-button></div>
         </div>
       </div>
+      <div class="right-bd">
+        <OrgChart ref="orgChartRef" :org-chart-data="orgChartData" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref, reactive } from 'vue'
 import menuTree from './components/menu-cpns/menuTree.vue'
+import orgChart from './components/orgChart.vue'
+
+interface DepartmentDataProps {
+  children?: DepartmentDataProps[]
+  id?: number | null
+  label?: string
+  company?: boolean
+  expand?: boolean
+}
+
+const orgChartRef = ref(null)
+let orgChartData: DepartmentDataProps = reactive({
+  children: [],
+  id: null,
+  label: '',
+  company: true,
+  expand: true
+})
 </script>
 
 <style lang="less" scoped>
@@ -52,7 +74,7 @@ import menuTree from './components/menu-cpns/menuTree.vue'
     margin-left: 8px;
     padding: 16px;
     box-sizing: border-box;
-    .right-bd {
+    .right-hd {
       padding-bottom: 8px;
       border-bottom: 1px solid #dcdfe6;
       .btns {
