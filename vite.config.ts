@@ -25,7 +25,7 @@ export default defineConfig({
     proxy: {
       '/api': {
 
-        target: 'http://exugtk.natappfree.cc/',
+        target: 'http://227gb4.natappfree.cc/',
         // target: 'http://8.130.168.233:8073/api-prod/',
         // target: 'https://208038ug41.imdo.co',
         // https://208038ug41.imdo.co/login/getTnfo
