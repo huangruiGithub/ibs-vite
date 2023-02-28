@@ -10,16 +10,29 @@
       <span class="title">Vue3-TypeScript-Vite</span>
     </div>
     <div class="content">
-      <span @click="logOutClick" style="cursor: pointer">退出登录</span>
+      <div class="info">
+        <el-icon><UserFilled /></el-icon>
+
+        <span class="user" @click="editPasswordClick">{{ userStore.userName }}</span>
+        <el-icon><SwitchButton /></el-icon>
+        <span @click="logOutClick" style="cursor: pointer">退出登录</span>
+        <EditPassword v-if="showEditPassword" ref="editPassword" @closeEditPassword="closeEditPassword" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useUserStore } from '@/store/modules/user'
+import { ElMessageBox } from 'element-plus'
+import EditPassword from './EditPassword.vue'
+const showEditPassword = ref(false)
+const userStore = useUserStore()
 const logOutClick = () => {
-  useUserStore().logout()
+  ElMessageBox.confirm('是否退出登录', '提示').then(() => {
+    useUserStore().logout()
+  })
 }
 
 // 0.内部自定义事件
@@ -33,6 +46,17 @@ function handleMenuIconClick() {
 
   // 2.将事件和状态传递给父组件
   emit('foldChange', isFold.value)
+}
+//编辑密码相关
+const editPassword = ref()
+const editPasswordClick = () => {
+  showEditPassword.value = true
+  nextTick(() => {
+    editPassword.value.is()
+  })
+}
+const closeEditPassword = () => {
+  showEditPassword.value = false
 }
 </script>
 
@@ -68,10 +92,22 @@ function handleMenuIconClick() {
 
   .content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex: 1;
     padding: 0 18px;
+    .info {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      .el-icon {
+        font-size: 18px;
+        margin: 0 5px;
+      }
+      .user {
+        padding: 0 20px 0 10px;
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>

@@ -26,7 +26,7 @@
         <!-- <SubMenu v-else :menu="menu" /> -->
         <el-sub-menu :index="menu.name">
           <template #title>
-            <el-icon>
+            <el-icon size="22px">
               <svg-icon :name="menu.meta.icon" color="#fff" class-name="memu-icon"></svg-icon>
             </el-icon>
 
