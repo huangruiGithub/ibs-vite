@@ -1,0 +1,14 @@
+@charset "UTF-8";
+ 
+/* @font-face {
+  font-family: "MFMingHei_Noncommercial-Regular"; // 自己取的名字，项目中可运用
+  src: url("font/明黑.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+} */
+@font-face {
+  font-family: "PingFangSC-Regular";
+  src: url("./SourceHanSansCN-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}

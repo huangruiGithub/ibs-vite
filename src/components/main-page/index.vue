@@ -1,6 +1,7 @@
 <template>
-  <div class="main-page">
+  <div class="main-page" :class="card && 'card'">
     <div class="title">
+      <span class="title-border">&nbsp;</span>
       <span>
         {{ props.title || $route.meta.title }}
       </span>
@@ -14,8 +15,6 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
 const props = defineProps({
   title: {
     type: String,
@@ -24,17 +23,45 @@ const props = defineProps({
   contentStyle: {
     type: Object,
     default: () => ({})
+  },
+  card: {
+    type: Boolean,
+    default: true
   }
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .main-page {
   height: 100%;
-  background-color: #fff;
+  &.card {
+    height: calc(100% - 20px);
+    margin: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 0 12px 0;
+    .title {
+      height: 54px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding: 0;
+      font-size: 20px;
+      font-weight: 600;
+      > .title-border {
+        font-size: 22px;
+        padding-right: 4px;
+        border-left: 2.5px solid var(--el-color-primary);
+      }
+    }
+    > .content {
+      height: calc(100% - 64px);
+      padding: 0;
+    }
+  }
+
   > .title {
-    padding: 0 24px;
     height: 64px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -44,7 +71,8 @@ const props = defineProps({
   > .content {
     height: calc(100% - 64px);
     padding: 0 24px;
-    ::v-deep .el-scrollbar__wrap {
+
+    :deep(.el-scrollbar__wrap) {
       overflow-x: hidden;
     }
   }

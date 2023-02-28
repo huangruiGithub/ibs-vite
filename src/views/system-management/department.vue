@@ -2,12 +2,12 @@
   <div class="department">
     <el-row style="height: 100%">
       <el-col :span="6" style="height: 100%">
-        <MainPage title="部门树">
+        <MainPage card title="部门树">
           <DepartmentTree :edit="true" @getTreeData="getTreeData" />
         </MainPage>
       </el-col>
-      <el-col :span="18" style="height: 100%; border-left: 1px solid #dcdee0">
-        <MainPage title="组织架构图" style="height: 100%">
+      <el-col :span="18" style="height: 100%">
+        <MainPage card style="margin-left: 0" title="组织架构图">
           <template #title>
             <el-button plain class="topBtn" @click="downloadImg">下 载</el-button>
           </template>

@@ -1,12 +1,12 @@
 <template>
   <el-row style="height: 100%; margin: 0; padding: 0">
     <el-col :span="6" style="height: 100%">
-      <MainPage title="组织树">
+      <MainPage card title="组织树">
         <DepartmentTree :edit="true" @nodeClick="getTableData" />
       </MainPage>
     </el-col>
-    <el-col :span="18" style="height: 100%; border-left: 1px solid #dcdee0">
-      <MainPage title="用户列表">
+    <el-col :span="18" style="height: 100%">
+      <MainPage title="用户列表" card style="margin-left: 0">
         <div class="content">
           <div class="search">
             <span>用户名称/登录名：</span>
