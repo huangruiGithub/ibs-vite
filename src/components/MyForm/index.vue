@@ -1,12 +1,5 @@
 <template>
-  <el-form
-    ref="form"
-    :model="formData"
-    :size="$attrs.size ? $attrs.size : 'small'"
-    label-suffix="："
-    :rules="rules"
-    v-bind="$attrs"
-  >
+  <el-form ref="form" :model="formData" size="small" label-suffix="：" :rules="rules" v-bind="$attrs">
     <el-row :key="key" :gutter="10">
       <el-col v-for="(item, index) in formConf" :key="index" :span="item.span ? item.span : 24">
         <slot v-if="item.type === 'title'" name="title" v-bind="item" />
@@ -92,26 +85,20 @@
   </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, ref, defineExpose, watch } from 'vue'
+import type { formConfType } from './type'
 import _ from 'loadsh'
-const props = defineProps({
-  formConf: {
-    type: Array,
-    required: true
-  },
-  rules: {
-    type: Object,
-    default: () => ({})
-  },
-  formData: {
-    type: Object,
-    required: true
-  },
-  innerPadding: {
-    type: String,
-    default: '60px'
-  }
+
+interface propsType {
+  formConf: formConfType[]
+  rules: object
+  formData: any
+  innerPadding: string
+}
+const props = withDefaults(defineProps<propsType>(), {
+  rules: () => ({}),
+  innerPadding: '60px'
 })
 const formConf = ref(props.formConf)
 const key = ref(Math.random())
@@ -129,7 +116,7 @@ watch(
 const form = ref()
 const submitForm = () => {
   let state = false
-  form.value.validate((valid) => {
+  form.value.validate((valid: boolean) => {
     if (valid) {
       state = true
     }

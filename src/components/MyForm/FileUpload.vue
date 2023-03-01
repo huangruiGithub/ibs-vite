@@ -30,7 +30,7 @@
 import { download } from '@/api/resource-management'
 import { fileDownload } from '@/utils/download.js'
 import { defineProps, defineEmits, watch, ref } from 'vue'
-import { ElMessageBox, ElMessage } from 'element-ui'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 const props = defineProps({
   fileList: {
@@ -63,17 +63,17 @@ const sumFileSize = ref(0)
 watch(
   () => props.fileList,
   () => {
-    sumFileSize.value = props.fileList.reduce((pre, item) => pre + item.fileSize, 0)
+    sumFileSize.value = props.fileList.reduce((pre, item) => pre + item.fileSize, 0) as number
     console.log(props.fileList, sumFileSize, 'filesize')
   },
   { deep: true, immediate: true }
 )
 const emits = defineEmits(['input'])
-const url = process.env.VUE_APP_BASE_API + 'files/uploadFile'
-const handleSuccess = (response, file) => {
+const url = import.meta.env.VITE_APP_BASE_API + 'files/uploadFile'
+const handleSuccess = (response: any, file: any) => {
   console.log('handleSuccess')
   if (file.status === 'success') {
-    const index = props.fileList.findIndex((item) => {
+    const index = props.fileList.findIndex((item: any) => {
       const fileName = item.name ?? item.response?.name
       return fileName === file.response.name
     })
@@ -107,14 +107,14 @@ const beforeAvatarUpload = (file: any) => {
   return isInSize
 }
 
-const handlePreview = (file) => {
+const handlePreview = (file: any) => {
   const path = file.url ?? file.response?.url
   const fileName = file.name ?? file.response?.name
-  download({ files: [{ path, fileName }] }).then((res) => {
+  download({ files: [{ path, fileName }] }).then((res: any) => {
     fileDownload(res)
   })
 }
-const beforeRemove = (file, fileList) => {
+const beforeRemove = (file: any, fileList: any) => {
   if (props.disabled) {
     ElMessage.error('查看状态不可删除文件')
     return false
@@ -125,8 +125,8 @@ const beforeRemove = (file, fileList) => {
     return ElMessageBox.confirm(`确定移除 ${file.name}？`)
   }
 }
-const handleRemove = (file, fileList) => {
-  const index = props.fileList.findIndex((item) => {
+const handleRemove = (file: any, fileList: any) => {
+  const index = props.fileList.findIndex((item: any) => {
     const fileName = item.name ?? item.response?.name
     const delFileName = file.name ?? file.response?.name
     return fileName === delFileName
