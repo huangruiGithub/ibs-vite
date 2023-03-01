@@ -6,20 +6,20 @@
         <el-icon class="el-input__icon"><search /></el-icon>
       </template>
     </el-input>
-
-    <el-tree
-      ref="treeRef"
-      class="filter-tree"
-      :data="treeData"
-      :props="defaultProps"
-      default-expand-all
-      :filter-node-method="filterNode"
-    >
-      <template v-slot="slotData">
-        <el-icon><OfficeBuilding /></el-icon>
-        <span>{{ slotData.data.label }}</span>
-      </template>
-    </el-tree>
+    <div class="filter-tree">
+      <el-tree
+        ref="treeRef"
+        :data="treeData"
+        :props="defaultProps"
+        default-expand-all
+        :filter-node-method="filterNode"
+      >
+        <template v-slot="slotData">
+          <el-icon><OfficeBuilding /></el-icon>
+          <span>{{ slotData.data.label }}</span>
+        </template>
+      </el-tree>
+    </div>
   </div>
 </template>
 
@@ -108,7 +108,9 @@ const treeData: Tree[] = [
     height: 32px;
   }
   .filter-tree {
+    overflow-y: auto;
     margin-top: 16px;
+    height: calc(100vh - 172px);
   }
 }
 </style>
