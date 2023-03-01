@@ -14,12 +14,7 @@
         placeholder="请输入攻击工具名称"
       ></el-input>
       <span>协议类型：</span>
-      <el-select
-        v-model="filterData.protocolType"
-        placeholder="请选择"
-        style="line-height: 40px"
-        clearable
-      >
+      <el-select v-model="filterData.protocolType" placeholder="请选择" style="line-height: 40px" clearable>
         <el-option
           v-for="item in options.apiTypeOptions"
           :key="item.value"
@@ -29,9 +24,7 @@
       </el-select>
       <el-button type="primary" @click="getTableData">搜索</el-button>
 
-      <el-button type="primary" style="margin-left: auto" @click="command('')"
-        >新增</el-button
-      >
+      <el-button type="primary" style="margin-left: auto" @click="command('')">新增</el-button>
       <el-button type="danger" @click="batchDeleteClick">批量删除</el-button>
     </div>
     <div v-loading="isLoading" class="table-wrap">
@@ -59,12 +52,7 @@
         </template> -->
         <template #operation="slotProps">
           <!-- <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link> -->
-          <el-link
-            type="primary"
-            :underline="false"
-            @click="editClcik(slotProps.row)"
-            >修改</el-link
-          >
+          <el-link type="primary" :underline="false" @click="editClcik(slotProps.row)">修改</el-link>
 
           <el-popconfirm
             confirm-button-text="删除"
@@ -95,15 +83,11 @@
 <script setup lang="ts">
 import { reactive, computed, ref } from 'vue'
 // import DetailForms from './DetailForms'
-import {
-  loadEndpointTableData,
-  deleteThreePartyEndpoint,
-  getProtocolList
-} from '@/api/resource-management'
+import { loadEndpointTableData, deleteThreePartyEndpoint, getProtocolList } from '@/api/resource-management'
 import { ElMessage, ElMessageBox } from 'element-plus'
 // import { download } from '@/api/resource-management'
 // import { fileDownload } from '@/utils/download.js'
-import type { tableLabelType } from '@/components/form-table/type'
+import type { tableLabelType } from '@/components/FormTable/type'
 import _ from 'loadsh'
 // 过滤
 interface filterDataType {
@@ -122,15 +106,13 @@ const formTable = ref()
 const tableData = ref([])
 const paginationData = reactive({ currentPage: 1, pageSize: 10 })
 const tableTotalSize = ref(0)
-const options: { apiTypeOptions: { label: string; value: number | string }[] } =
-  reactive({
-    apiTypeOptions: []
-  })
+const options: { apiTypeOptions: { label: string; value: number | string }[] } = reactive({
+  apiTypeOptions: []
+})
 const isLoading = ref(false)
 const getTableData = _.throttle(() => {
   isLoading.value = true
-  filterData.protocolType =
-    filterData.protocolType === '' ? undefined : filterData.protocolType
+  filterData.protocolType = filterData.protocolType === '' ? undefined : filterData.protocolType
   loadEndpointTableData({
     params: {
       type: 1,
@@ -151,13 +133,7 @@ const getTableData = _.throttle(() => {
 }, 2000)
 getProtocolList({ type: 1 }).then((res: any) => {
   options.apiTypeOptions = res.data.map(
-    ({
-      description,
-      protocolTypeId
-    }: {
-      description: string
-      protocolTypeId: string
-    }) => ({
+    ({ description, protocolTypeId }: { description: string; protocolTypeId: string }) => ({
       label: description,
       value: protocolTypeId
     })
@@ -183,14 +159,9 @@ const batchDeleteClick = () => {
       type: 'warning'
     }).then(() => {
       console.log('删除', selectItems.value)
-      const endpointIds = selectItems.value.map(
-        ({ endpointId }: { endpointId: number }) => endpointId
-      )
+      const endpointIds = selectItems.value.map(({ endpointId }: { endpointId: number }) => endpointId)
       deleteThreePartyEndpoint({ endpointIds }).then(() => {
-        if (
-          tableData.value.length === endpointIds.length &&
-          paginationData.currentPage !== 1
-        ) {
+        if (tableData.value.length === endpointIds.length && paginationData.currentPage !== 1) {
           paginationData.currentPage--
         }
         getTableData()
@@ -267,12 +238,7 @@ const tableLabel = computed((): tableLabelType[] => [
     prop: 'testToolName',
     label: '工具名称',
     valueFormat(scope: any, label: any) {
-      return (
-        scope.row[label.prop]?.reduce(
-          (total: any, item: any) => total + `<div>${item}</div>`,
-          ''
-        ) ?? ''
-      )
+      return scope.row[label.prop]?.reduce((total: any, item: any) => total + `<div>${item}</div>`, '') ?? ''
     }
   },
   {

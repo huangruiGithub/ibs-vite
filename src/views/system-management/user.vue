@@ -70,7 +70,7 @@ import DepartmentTree from '@/components/DepartmentTree/index.vue'
 // import DetailForms from './DetailForms'
 import { getUser } from '@/api/system-management'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { tableLabelType } from '@/components/form-table/type'
+import type { tableLabelType } from '@/components/FormTable/type'
 import _ from 'loadsh'
 // 过滤
 interface filterDataType {

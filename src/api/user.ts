@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import qs from 'qs'
 export function login(data: any) {
-  return request.request({
+  return request({
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: 'login',
     method: 'post',
@@ -9,20 +9,20 @@ export function login(data: any) {
   })
 }
 export function getInfo() {
-  return request.request({
+  return request({
     url: 'login/getInfo',
     method: 'get',
   })
 }
 
 export function logout() {
-  return request.request({
+  return request({
     url: 'logout',
     method: 'post',
   })
 }
 export function changePassword(data: any) {
-  return request.request({
+  return request({
     url: 'user/changePassword',
     method: 'post',
     data,
@@ -38,7 +38,7 @@ export function changePassword(data: any) {
 }
 // 加载用户的全部配置列表
 export function loadAllUserOptionList() {
-  return request.request({
+  return request({
     url: '/user/loadAllOptionList',
     method: 'get',
   })
@@ -46,7 +46,7 @@ export function loadAllUserOptionList() {
 
 // 根据用户名称加载配置选项
 export function loadOptionListByUserName(data: any) {
-  return request.request({
+  return request({
     url: '/user/loadOptionListByUserName',
     method: 'post',
     transformRequest: [

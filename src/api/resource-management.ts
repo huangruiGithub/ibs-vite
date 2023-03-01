@@ -12,21 +12,21 @@ interface loadEndpointTableDataParamsType {
   sort: {};
 }
 export function loadEndpointTableData(data: loadEndpointTableDataParamsType) {
-  return request.request({
+  return request({
     url: '/endpoint/loadEndpointTableData',
     method: 'post',
     data
   })
 }
 export function deleteThreePartyEndpoint(data: { endpointIds: number[] }) {
-  return request.request({
+  return request({
     url: '/endpoint/deleteThreePartyEndpoint',
     method: 'post',
     data
   })
 }
 export function getProtocolList(params: { type: number }) {
-  return request.request({
+  return request({
     url: '/endpoint/getProtocolList',
     method: 'get',
     params
