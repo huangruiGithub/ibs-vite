@@ -32,9 +32,6 @@ const handleItemClick = (menu: any) => {
   &.is-active :deep(.el-tooltip__trigger) {
     background-color: var(--el-color-primary) !important;
   }
-  .el-menu-item {
-    padding-left: 50px !important;
-  }
 
   .el-menu-item:hover {
     color: #fff;

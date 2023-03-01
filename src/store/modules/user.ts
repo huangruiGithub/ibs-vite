@@ -84,7 +84,6 @@ export const useUserStore = defineStore({
       return new Promise((resolve, reject) => {
         login({ account: account.trim(), password: password })
           .then(async (response: any) => {
-            console.log(response,)
             const loginRes: loginResType = response.data
             this.token = String(loginRes.user.roleId)
             this.userName = loginRes.user.userName
@@ -130,6 +129,17 @@ export const useUserStore = defineStore({
           .catch((error: any) => {
             reject(error)
           })
+      })
+    },
+
+    // remove token
+    resetToken() {
+      return new Promise((resolve) => {
+        removeToken() // must remove  token  first
+        resetRouter()
+        localCache.removeItem('ibsRouter')
+        this.$reset()
+        resolve('')
       })
     },
     logout() {
