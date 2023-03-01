@@ -2,7 +2,7 @@
   <div class="main-page" :class="card && 'card'">
     <div class="title">
       <span class="title-border">&nbsp;</span>
-      <span>
+      <span style="padding-right: 12px">
         {{ props.title || $route.meta.title }}
       </span>
       <slot name="title"></slot>

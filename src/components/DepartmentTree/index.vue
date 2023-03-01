@@ -1,74 +1,76 @@
 <template>
   <div class="departmentTree">
     <el-input v-model="filterText" placeholder="输入关键字进行过滤" style="padding-bottom: 10px" />
-    <el-tree
-      ref="tree"
-      :data="departmentTree"
-      default-expand-all
-      node-key="id"
-      highlight-current
-      :expand-on-click-node="false"
-      :filter-node-method="filterNode"
-      :props="defaultProps"
-      @node-click="nodeClick"
-    >
-      <template #default="{ node, data }">
-        <span>
-          <div
-            v-if="props.edit"
-            style="width: 100%; position: relative; bottom: 3px"
-            @mouseenter="mouseenter(data)"
-            @mouseleave="mouseleave(data)"
-          >
-            <el-icon>
-              <OfficeBuilding />
-            </el-icon>
-            <div class="treeLabel">{{ data.label }}</div>
-            <el-popover
-              id="popoverDiv"
-              :visible="data.popoverShow"
-              popper-class="departmentPopover"
-              placement="right"
-              :width="200"
+    <div class="tree-wrap">
+      <el-tree
+        ref="tree"
+        :data="departmentTree"
+        default-expand-all
+        node-key="id"
+        highlight-current
+        :expand-on-click-node="false"
+        :filter-node-method="filterNode"
+        :props="defaultProps"
+        @node-click="nodeClick"
+      >
+        <template #default="{ node, data }">
+          <span>
+            <div
+              v-if="props.edit"
+              style="width: 100%; position: relative; bottom: 3px"
+              @mouseenter="mouseenter(data)"
+              @mouseleave="mouseleave(data)"
             >
-              <span>
-                <div class="popover-close-icon-wrap">
-                  <Close class="popoverCloseIcon" @click="closeClick(data)" />
-                </div>
-                <ul v-show="popoverType === 'index'" class="popoverUl">
-                  <li class="popoverItem" @click="popoverType = 'editName'">修改名称</li>
+              <el-icon>
+                <OfficeBuilding />
+              </el-icon>
+              <div class="treeLabel">{{ data.label }}</div>
+              <el-popover
+                id="popoverDiv"
+                :visible="data.popoverShow"
+                popper-class="departmentPopover"
+                placement="right"
+                :width="200"
+              >
+                <span>
+                  <div class="popover-close-icon-wrap">
+                    <Close class="popoverCloseIcon" @click="closeClick(data)" />
+                  </div>
+                  <ul v-show="popoverType === 'index'" class="popoverUl">
+                    <li class="popoverItem" @click="popoverType = 'editName'">修改名称</li>
 
-                  <li class="popoverItem" @click="clickAddDept">
-                    {{ data.company ? '添加部门' : '添加子部门' }}
-                  </li>
-                  <li v-show="!data.company" class="popoverItem" style="color: red" @click="clickDeleteDept">
-                    删除
-                  </li>
-                </ul>
-                <div v-show="popoverType === 'editName'" class="editName">
-                  <el-input v-model="editDeptName" style="width: 160px" placeholder="请输入部门名称" />
-                  <el-button plain class="popoverBtn" @click="popoverType = 'index'">取 消</el-button>
-                  <el-button type="primary" class="popoverBtn" @click="submitSetName(data)">确 定</el-button>
-                </div>
-              </span>
-              <template #reference>
-                <div v-if="data.show" style="display: inline-block">
-                  <el-icon>
-                    <MoreFilled style="transform: rotate(90deg)" @click="iconClick(data)" />
-                  </el-icon>
-                </div>
-              </template>
-            </el-popover>
-          </div>
-          <div v-if="!edit">
-            <el-icon>
-              <OfficeBuilding />
-            </el-icon>
-            <span style="padding-left: 15px">{{ node.label }}</span>
-          </div>
-        </span>
-      </template>
-    </el-tree>
+                    <li class="popoverItem" @click="clickAddDept">
+                      {{ data.company ? '添加部门' : '添加子部门' }}
+                    </li>
+                    <li v-show="!data.company" class="popoverItem" style="color: red" @click="clickDeleteDept">
+                      删除
+                    </li>
+                  </ul>
+                  <div v-show="popoverType === 'editName'" class="editName">
+                    <el-input v-model="editDeptName" style="width: 160px" placeholder="请输入部门名称" />
+                    <el-button plain class="popoverBtn" @click="popoverType = 'index'">取 消</el-button>
+                    <el-button type="primary" class="popoverBtn" @click="submitSetName(data)">确 定</el-button>
+                  </div>
+                </span>
+                <template #reference>
+                  <div v-if="data.show" style="display: inline-block">
+                    <el-icon>
+                      <svg-icon v-if="data.show && !data.system" name="treeUnfold" @click="iconClick(data)" />
+                    </el-icon>
+                  </div>
+                </template>
+              </el-popover>
+            </div>
+            <div v-if="!edit">
+              <el-icon>
+                <OfficeBuilding />
+              </el-icon>
+              <span style="padding-left: 15px">{{ node.label }}</span>
+            </div>
+          </span>
+        </template>
+      </el-tree>
+    </div>
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="400px" :before-close="handleClose">
       <div class="formLabel">部门名称：</div>
       <el-input
@@ -89,8 +91,7 @@ import {
   addDepartmentNode,
   setDepartmentName,
   deleteDepartmentNode,
-  getDepartmentNodeTree,
-  setDepartmentArea
+  getDepartmentNodeTree
 } from '@/api/system-management'
 import { ref, reactive, watch } from 'vue'
 import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
@@ -104,9 +105,6 @@ const props = defineProps({
   }
 })
 const tree = ref()
-const cascaderProps = {
-  expandTrigger: 'click'
-}
 const filterText = ref('')
 watch(filterText, (val) => {
   tree.value.filter(val)
@@ -362,6 +360,15 @@ const iconClick = (data: DepartmentDataProps) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  .tree-wrap {
+    flex: 1;
+    overflow: hidden;
+    &:hover {
+      overflow-y: overlay;
+    }
+  }
   .treeBox {
     flex: 1;
   }

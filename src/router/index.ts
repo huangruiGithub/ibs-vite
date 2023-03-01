@@ -5,9 +5,9 @@ let routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/layout'
-  },{
+  }, {
     path: '/layout',
-    component:() => import('@/views/layout/layout.vue')
+    component: () => import('@/views/layout/layout.vue')
   },
   {
     path: '/login',
@@ -34,7 +34,7 @@ const router = createRouter({
   routes
 })
 export const resetRouter = () => {
-  location.reload()
+  router.push('/login')
 }
 // 导出
 export default router 
