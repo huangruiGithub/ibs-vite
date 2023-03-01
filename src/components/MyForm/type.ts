@@ -7,7 +7,7 @@ export interface formConfType {
   hide?: boolean
   type?: string
   otherProps?: any
-  width: string | number
+  width?: string | number
   selectOptions?: selectOptionType[]
   unit?: string
 }
