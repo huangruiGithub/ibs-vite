@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-// import qs from 'qs'
+import qs from 'qs'
 
 
 // 用户管理
@@ -102,11 +102,38 @@ export function getDepartmentNodeTree() {
   })
 
 }
-  //获取菜单树
-  export function getMenuTreeData(){
-    return request.request({
-      url:"right/loadTreeWithSystemName",
-      method:'get'
-    })
-    
-  }
+//获取菜单树
+export function getMenuTreeData() {
+  return request.request({
+    url: "right/loadTreeWithSystemName",
+    method: 'get'
+  })
+
+}
+
+
+// 菜单权限
+export function loadTreeWithSystemName() {
+  return request({
+    url: 'right/loadTreeWithSystemName',
+    method: 'get'
+  })
+}
+export function setRightName(data: {
+  rightName: string;
+  rightId: number | null;
+}) {
+  return request({
+    url: 'right/update',
+    method: 'post',
+    data: data,
+    transformRequest: [
+      function (data) {
+        return qs.stringify(data)
+      }
+    ],
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
