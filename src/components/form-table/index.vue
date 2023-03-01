@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import { defineProps, computed, ref, defineExpose, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 // import _ from 'lodash'
 import type { selectOptionType, tagOptionType, indexType, tableLabelType } from './type'
 interface propsType {
@@ -173,7 +173,7 @@ defineExpose({ table })
 
 <style lang="scss" scoped>
 .el-table {
-  ::v-deep th.el-table__cell > .cell {
+  :deep(th.el-table__cell) > .cell {
     white-space: pre-line;
   }
 }
@@ -195,13 +195,10 @@ defineExpose({ table })
   }
 }
 .type-input {
-  ::v-deep .el-input__inner {
+  :deep(.el-input__inner) {
     padding: 0 5px;
   }
-  ::v-deep .el-input__inner {
-    padding: 0 5px;
-  }
-  ::v-deep .el-input-group__append {
+  :deep(.el-input-group__append) {
     padding: 0 5px;
   }
 }
@@ -212,11 +209,11 @@ defineExpose({ table })
   align-items: baseline;
   .el-input-number {
     &.hasUnit {
-      ::v-deep .el-input__inner {
+      :deep(.el-input__inner) {
         border-radius: 4px 0 0 4px;
       }
     }
-    ::v-deep .el-input__inner {
+    :deep(.el-input__inner) {
       padding: 0 3px;
     }
     flex: 1;
@@ -231,23 +228,23 @@ defineExpose({ table })
     border-radius: 0 4px 4px 0;
   }
 }
-::v-deep .el-table__body-wrapper::-webkit-scrollbar {
+:deep(.el-table__body-wrapper::-webkit-scrollbar) {
   width: 2px;
 }
-::v-deep .el-table__body-wrapper::-webkit-scrollbar-thumb {
+:deep(.el-table__body-wrapper::-webkit-scrollbar-thumb) {
   border-radius: 2px;
   height: 2px;
   background: rgba(0, 0, 0, 0.1);
 }
-::v-deep .el-table__body-wrapper::-webkit-scrollbar-track {
+:deep(.el-table__body-wrapper::-webkit-scrollbar-track) {
   box-shadow: inset 0 0 5px #eee;
   border-radius: 2px;
   background: #eee;
 }
-::v-deep .el-tooltip__popper {
+:deep(.el-tooltip__popper) {
   color: red;
 }
-::v-deep .el-textarea__inner {
+:deep(.el-textarea__inner) {
   padding-right: 52px;
 }
 </style>

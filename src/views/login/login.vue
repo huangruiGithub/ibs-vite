@@ -33,13 +33,7 @@
             @keyup.enter.native="handleLogin"
           />
         </el-form-item>
-        <el-button
-          :loading="loading"
-          type="primary"
-          class="loginBtn"
-          round
-          @click.native.prevent="handleLogin"
-        >
+        <el-button :loading="loading" type="primary" class="loginBtn" round @click.native.prevent="handleLogin">
           登 录
         </el-button>
       </el-form>
@@ -77,11 +71,9 @@ const loginForm = reactive({
 const form = ref()
 const handleLogin = () => {
   form.value.validate().then(() => {
-    userStore
-      .login({ ...loginForm, password: md5(loginForm.password) })
-      .then(() => {
-        router.push('/system-management/user')
-      })
+    userStore.login({ ...loginForm, password: md5(loginForm.password) }).then(() => {
+      router.push('/system-management/user')
+    })
   })
 
   // if (valid) {
@@ -135,7 +127,7 @@ const handleLogin = () => {
     .login-form {
       width: 440px;
       .form-item {
-        ::v-deep .el-form-item__label {
+        :deep(.el-form-item__label) {
           color: #fff !important;
         }
       }
@@ -146,7 +138,7 @@ const handleLogin = () => {
     }
     .el-input {
       width: 350px;
-      ::v-deep .el-input__inner {
+      :deep(.el-input__inner) {
         border-radius: 28px;
         background-color: #fff !important;
         &.hover {
