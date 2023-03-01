@@ -32,38 +32,29 @@ import { fileDownload } from '@/utils/download.js'
 import { defineProps, defineEmits, watch, ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 
-const props = defineProps({
-  fileList: {
-    type: Array,
-    required: true
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  tip: {
-    type: String,
-    default: ''
-  },
-  fileSize: {
-    type: Number,
-    default: 0
-  },
-  sizeUnit: {
-    type: String,
-    default: 'MB'
-  },
-  limit: {
-    type: Number,
-    default: 100
+const props = withDefaults(
+  defineProps<{
+    fileList: any[]
+    disabled: boolean
+    tip: string
+    fileSize: number
+    sizeUnit: 'KB' | 'MB' | 'GB'
+    limit: number
+  }>(),
+  {
+    disabled: false,
+    tip: '',
+    fileSize: 0,
+    sizeUnit: 'MB',
+    limit: 100
   }
-})
+)
 const sumFileSize = ref(0)
 
 watch(
   () => props.fileList,
   () => {
-    sumFileSize.value = props.fileList.reduce((pre, item) => pre + item.fileSize, 0) as number
+    sumFileSize.value = props.fileList.reduce((pre, item: any) => pre + item.fileSize, 0) as number
     console.log(props.fileList, sumFileSize, 'filesize')
   },
   { deep: true, immediate: true }
@@ -93,7 +84,7 @@ const beforeAvatarUpload = (file: any) => {
     MB: 1024 * 1024,
     GB: 1024 * 1024 * 1024
   }
-  const { fileSize, sizeUnit }: { fileSize: number; sizeUnit: string } = props
+  const { fileSize, sizeUnit } = props
   if (!fileSize) {
     return true
   }
