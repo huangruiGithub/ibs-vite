@@ -9,6 +9,8 @@ interface getUserParamsType {
   sort: {}
   params: {}
 }
+
+
 export function getUser(data: getUserParamsType) {
   return request.request({
     url: 'user/loadTable',
@@ -98,4 +100,13 @@ export function getDepartmentNodeTree() {
     url: 'department/loadTree',
     method: 'get'
   })
+
 }
+  //获取菜单树
+  export function getMenuTreeData(){
+    return request.request({
+      url:"right/loadTreeWithSystemName",
+      method:'get'
+    })
+    
+  }

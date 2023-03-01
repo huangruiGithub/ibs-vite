@@ -9,7 +9,7 @@
       </div>
       <!-- 内容 -->
       <div class="left-bd">
-        <menuTree />
+        <menuTree :treeData="treeData" :treeProps="defaultTreeProps" />
       </div>
     </div>
     <div class="right comm-border">
@@ -29,15 +29,29 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { objAssign } from '@/utils/index'
 import menuTree from './components/menu-cpns/menuTree.vue'
 import orgChart from './components/orgChart.vue'
+import { getMenuTreeData } from '@/api/system-management'
 
 interface DepartmentDataProps {
   children?: DepartmentDataProps[]
   id?: number | null
   label?: string
-  company?: boolean
+  system?: boolean
   expand?: boolean
+}
+
+interface Tree {
+  id: number
+  label: string
+  children?: Tree[]
+}
+
+const defaultTreeProps = {
+  id: 'id',
+  children: 'children',
+  label: 'label'
 }
 
 const orgChartRef = ref(null)
@@ -45,8 +59,13 @@ let orgChartData: DepartmentDataProps = reactive({
   children: [],
   id: null,
   label: '',
-  company: true,
+  system: true,
   expand: true
+})
+
+let treeData: Tree[] = reactive([])
+getMenuTreeData().then((res) => {
+  treeData.push(res.data)
 })
 </script>
 

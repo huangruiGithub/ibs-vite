@@ -9,14 +9,14 @@
     <div class="filter-tree">
       <el-tree
         ref="treeRef"
-        :data="treeData"
-        :props="defaultProps"
+        :data="props.treeData"
+        :props="props.treeProps"
         default-expand-all
         :filter-node-method="filterNode"
       >
         <template v-slot="slotData">
           <el-icon><OfficeBuilding /></el-icon>
-          <span>{{ slotData.data.label }}</span>
+          <span style="margin-left: 4px">{{ slotData.data.label }}</span>
         </template>
       </el-tree>
     </div>
@@ -24,25 +24,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, defineProps } from 'vue'
 import { ElTree } from 'element-plus'
 
-interface Tree {
-  id: number
-  label: string
-  children?: Tree[]
-}
+const props = defineProps({
+  treeData: {
+    type: Array,
+    default: () => []
+  },
+  treeProps: {
+    type: Object,
+    default: () => ({ children: 'children', label: 'label' })
+  }
+})
 
 const serachVal = ref('')
 
 const treeRef = ref<InstanceType<typeof ElTree>>()
 
-const defaultProps = {
-  children: 'children',
-  label: 'label'
-}
-
-watch(serachVal, (val) => {
+watch(serachVal, (val: string) => {
   treeRef.value!.filter(val)
 })
 
@@ -50,57 +50,6 @@ const filterNode = (value: string, data: Tree) => {
   if (!value) return true
   return data.label.includes(value)
 }
-
-const treeData: Tree[] = [
-  {
-    id: 1,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 4,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 9,
-            label: 'Level three 1-1-1'
-          },
-          {
-            id: 10,
-            label: 'Level three 1-1-2'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 2,
-    label: 'Level one 2',
-    children: [
-      {
-        id: 5,
-        label: 'Level two 2-1'
-      },
-      {
-        id: 6,
-        label: 'Level two 2-2'
-      }
-    ]
-  },
-  {
-    id: 3,
-    label: 'Level one 3',
-    children: [
-      {
-        id: 7,
-        label: 'Level two 3-1'
-      },
-      {
-        id: 8,
-        label: 'Level two 3-2'
-      }
-    ]
-  }
-]
 </script>
 <style lang="less" scoped>
 .menu-tree {

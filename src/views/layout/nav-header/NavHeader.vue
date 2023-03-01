@@ -7,7 +7,7 @@
     </div>
 
     <div class="content">
-      <span @click="logOutClick" style="cursor: pointer">退出登录</span>
+      <span @click="logOutClick" class="logou-btn">退出登录</span>
     </div>
   </div>
 </template>
@@ -40,6 +40,7 @@ function handleMenuIconClick() {
   flex: 1;
 
   .menu-icon {
+    margin-bottom: -8px;
     font-size: 28px;
     cursor: pointer;
   }
@@ -50,6 +51,11 @@ function handleMenuIconClick() {
     align-items: center;
     flex: 1;
     padding: 0 18px;
+    .logou-btn {
+      padding: 0 4px;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
   }
 }
 </style>
