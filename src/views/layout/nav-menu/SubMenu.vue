@@ -29,6 +29,9 @@ const handleItemClick = (menu: any) => {
   background-color: var(--el-color-primary);
 }
 .el-sub-menu {
+  &.is-active :deep(.el-tooltip__trigger) {
+    background-color: var(--el-color-primary) !important;
+  }
   .el-menu-item {
     padding-left: 50px !important;
   }
@@ -42,6 +45,7 @@ const handleItemClick = (menu: any) => {
     background-color: var(--el-color-primary);
   }
 }
+
 .memu-icon {
   padding-right: 5px;
 }

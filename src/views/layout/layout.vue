@@ -36,7 +36,7 @@ const handleFoldClick = (isFold: boolean) => {
   height: 100vh;
 
   .el-header {
-    background-color: #0062ff;
+    background-color: var(--el-color-primary);
     height: 64px !important;
   }
 }

@@ -62,6 +62,13 @@ const logoClick = () => {
     border-right: none;
   }
 }
+.el-sub-menu {
+  &.is-active {
+    .el-sub-menu__title.el-tooltip__trigger {
+      background-color: var(--el-color-primary) !important;
+    }
+  }
+}
 .memu-icon {
   padding-right: 5px;
 }
