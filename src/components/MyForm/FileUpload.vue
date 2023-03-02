@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { download } from '@/api/resource-management'
-import { fileDownload } from '@/utils/download.js'
+import { fileDownload } from '@/utils/download'
 import { defineProps, defineEmits, watch, ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 

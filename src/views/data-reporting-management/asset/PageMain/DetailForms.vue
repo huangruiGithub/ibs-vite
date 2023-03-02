@@ -1,7 +1,7 @@
 <template>
   <span class="detail-forms">
     <el-drawer
-      :visible.sync="drawer"
+      v-model="drawer"
       size="800px"
       :with-header="false"
       destory-on-close
@@ -21,7 +21,7 @@
               label-width="150px"
             >
               <template #addressNo>
-                <RegionSelection v-model="formData.addressNo" @codeToText="codeToText" />
+                <!-- <RegionSelection v-model="formData.addressNo" @codeToText="codeToText" /> -->
               </template>
             </MyForm>
           </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </el-drawer>
-    <el-drawer :visible.sync="previewDrawer" size="800px" title="查看">
+    <el-drawer v-model="previewDrawer" size="800px" title="查看">
       <div v-if="previewDrawer" class="preview">
         <DescForm :form-conf="formConf" :form-data="formData">
           <template #addressNo>{{ formData?.provice }}{{ formData?.city }}{{ formData?.dist }}</template>
@@ -44,10 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, defineExpose, defineProps, defineEmits, nextTick } from 'vue'
+import { ref, computed, reactive, nextTick } from 'vue'
 import MyForm from '@/components/MyForm/index.vue'
 import DescForm from '@/components/DescForm/index.vue'
-import RegionSelection from '@/views/data-reporting-management/components/RegionSelection.vue'
+// import RegionSelection from '@/views/data-reporting-management/components/RegionSelection.vue'
 import { addKnowledgebaseAsset, updateKnowledgebaseAsset } from '@/api/data-reporting-management'
 
 import { ElMessageBox } from 'element-plus'
@@ -169,12 +169,9 @@ const cancelClick = () => {
     })
   }
 }
-const myForm = ref()
+const myForm = ref<InstanceType<typeof MyForm>>()
 const saveClick = () => {
-  const saveState = myForm.value.submitForm()
-  if (saveState) {
-    console.log(operationType.value, 'edit2')
-
+  myForm.value?.submitForm()?.then(() => {
     if (operationType.value === 'add') {
       addKnowledgebaseAsset(formData.value).then(() => {
         emits('saved')
@@ -187,7 +184,7 @@ const saveClick = () => {
       })
       console.log('edit')
     }
-  }
+  })
 }
 
 const codeToText = (provice: string, city: string, dist: string) => {
@@ -486,7 +483,7 @@ defineExpose({ show, showPreview })
         min-height: 300px;
         max-height: 800px;
 
-        .el-scrollbar ::v-deep .el-scrollbar__wrap {
+        .el-scrollbar :deep(.el-scrollbar__wrap) {
           overflow-x: hidden;
         }
       }

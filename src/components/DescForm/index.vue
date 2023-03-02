@@ -34,42 +34,32 @@
   </el-descriptions>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, ref, defineExpose, computed } from 'vue'
 import FileUpload from '@/components/MyForm/FileUpload.vue'
-const props = defineProps({
-  formConf: {
-    type: Array,
-    required: true
-  },
-  formData: {
-    type: Object,
-    required: true
-  },
-  title: {
-    type: String,
-    default: undefined
-  }
+const props = withDefaults(defineProps<{ formConf: any[]; formData: any; title: string }>(), {
+  title: undefined
 })
 const formConf = ref(props.formConf)
 const form = ref()
 const submitForm = () => {
+  console.log('submitForm')
   let state = false
-  form.value.validate((valid) => {
+  form.value.validate((valid: any) => {
     if (valid) {
       state = true
     }
   })
   return state
 }
-const cascaderValue = computed(() => (conf, data) => {
+const cascaderValue = computed(() => (conf: any, data: any) => {
   if (!data[conf.prop]) {
     return ''
   }
-  const valList = []
+  const valList: any = []
   let list = conf.otherProps.options
-  data[conf.prop].forEach((item, index) => {
-    list.forEach(({ value, label, children }) => {
+  data[conf.prop].forEach((item: any, index: any) => {
+    list.forEach(({ value, label, children }: { value: any; label: any; children: any }) => {
       if (value === item) {
         valList[index] = label
         list = children
@@ -78,8 +68,8 @@ const cascaderValue = computed(() => (conf, data) => {
   })
   return conf.otherProps['show-all-levels'] === false ? valList[valList.length - 1] : valList.join('/')
 })
-const selectValue = (options, value) => {
-  const item = options?.filter((item) => item.value === value)
+const selectValue = (options: any, value: any) => {
+  const item = options?.filter((item: any) => item.value === value)
   return item?.[0]?.label ?? ''
 }
 

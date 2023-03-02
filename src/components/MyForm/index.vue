@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" size="small" label-suffix="：" :rules="rules" v-bind="$attrs">
+  <el-form ref="form" :model="formData" label-suffix="：" :rules="rules" v-bind="$attrs">
     <el-row :key="key" :gutter="10">
       <el-col v-for="(item, index) in formConf" :key="index" :span="item.span ? item.span : 24">
         <slot v-if="item.type === 'title'" name="title" v-bind="item" />
@@ -87,6 +87,7 @@
 
 <script setup lang="ts">
 import { defineProps, ref, defineExpose, watch } from 'vue'
+import { ElForm } from 'element-plus'
 import type { formConfType } from './type'
 import _ from 'loadsh'
 
@@ -94,11 +95,9 @@ interface propsType {
   formConf: formConfType[]
   rules: object
   formData: any
-  innerPadding: string
 }
 const props = withDefaults(defineProps<propsType>(), {
-  rules: () => ({}),
-  innerPadding: '60px'
+  rules: () => ({})
 })
 const formConf = ref(props.formConf)
 const key = ref(Math.random())
@@ -113,15 +112,9 @@ watch(
     deep: true
   }
 )
-const form = ref()
+const form = ref<InstanceType<typeof ElForm>>()
 const submitForm = () => {
-  let state = false
-  form.value.validate((valid: boolean) => {
-    if (valid) {
-      state = true
-    }
-  })
-  return state
+  return form.value?.validate()
 }
 defineExpose({ submitForm, form })
 form.value
@@ -132,26 +125,17 @@ form.value
 .el-cascader {
   width: 100%;
 }
-// .inner-padding.el-input ::v-deep .el-input__inner {
-//   padding-right: v-bind(innerPadding);
-// }
-.inner-padding45.el-input ::v-deep .el-input__inner {
-  padding-right: 45px;
-}
-.inner-padding52.el-input ::v-deep .el-input__inner {
-  padding-right: 52px;
-}
 .type-number {
   position: relative;
   display: flex;
   align-items: baseline;
   .el-input-number {
     &.hasUnit {
-      ::v-deep .el-input__inner {
+      :deep(.el-input__inner) {
         border-radius: 4px 0 0 4px;
       }
     }
-    ::v-deep .el-input__inner {
+    :deep(.el-input__inner) {
       text-align: left;
     }
     flex: 1;
@@ -166,7 +150,7 @@ form.value
     border-radius: 0 4px 4px 0;
   }
 }
-::v-deep .el-textarea__inner {
+:deep(.el-textarea__inner) {
   padding-right: 52px;
 }
 </style>

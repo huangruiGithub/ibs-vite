@@ -32,8 +32,8 @@
         @selection-change="handleSelectionChange"
       >
         <template #operation="slotProps">
-          <!-- <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link> -->
-          <!-- <el-link type="primary" :underline="false" @click="editClcik(slotProps.row)">编辑</el-link> -->
+          <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link>
+          <el-link type="primary" :underline="false" @click="editClcik(slotProps.row)">编辑</el-link>
 
           <el-popconfirm
             confirm-button-text="删除"
@@ -44,7 +44,7 @@
             :title="`确定删除${slotProps.row.name}吗？`"
             @confirm="delClick(slotProps.row.id)"
           >
-            <!-- <el-link
+            <el-link
               slot="reference"
               type="primary"
               style="margin-left: 12px"
@@ -52,7 +52,7 @@
               @click="tipDelete(slotProps.row)"
             >
               删除
-            </el-link> -->
+            </el-link>
           </el-popconfirm>
         </template>
       </FormTable>

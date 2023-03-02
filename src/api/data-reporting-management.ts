@@ -29,3 +29,20 @@ export function deleteKnowledgebaseAsset(data: any) {
     data
   })
 }
+
+export function downloadTemplate(data: any, type: string) {
+  return request({
+    url: `${type}/downloadTemplate`,
+    method: 'post',
+    responseType: 'blob',
+    data
+  })
+}
+
+export function importDataFromExcel(data: any, type: string) {
+  return request({
+    url: `${type}/importDataFromExcel`,
+    method: 'post',
+    data
+  })
+}
