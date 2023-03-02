@@ -15,6 +15,7 @@ export interface tableLabelType {
   unit?: string
   index?: indexType
   tag?: string
+  width?: number,
   valueFormat?: (scope: any, label: tableLabelType) => any
 }
 export interface propsType {

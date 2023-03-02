@@ -39,6 +39,7 @@ const props = defineProps({
     border: 1px solid #eee;
     border-radius: 4px;
     padding: 0 12px 0;
+    box-shadow: var(--el-box-shadow-light);
     .title {
       height: 54px;
       margin-bottom: 10px;

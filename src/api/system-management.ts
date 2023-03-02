@@ -32,14 +32,71 @@ export function getUser(data: getUserParamsType) {
 //     data: object
 //   })
 // }
-// export function deleteUser(object) {
-//   return request({
-//     url: 'user/delete',
-//     method: 'post',
-//     data: object
-//   })
-// }
+export function deleteUser(data: { userId: any }) {
+  return request({
+    url: 'user/delete',
+    method: 'post',
+    data
+  })
+}
 
+// 角色管理
+export function getRole(data: {
+  pageSize: number;
+  currentPage: number;
+  sort: {};
+  params: {};
+}) {
+  return request({
+    url: 'role/loadRoleGrid',
+    method: 'post',
+    data
+  })
+}
+export function deleteRole(roleId: any) {
+  return request({
+    url: 'role/delete?roleId=' + roleId,
+    method: 'get'
+  })
+}
+export function addRole(data: any) {
+  return request({
+    url: 'role/add',
+    method: 'post',
+    data
+  })
+}
+export function updateRole(data: any) {
+  return request({
+    url: 'role/update',
+    method: 'post',
+    data
+  })
+}
+export function getUserRole(roleId: any) {
+  return request({
+    url: 'role/findById?roleId=' + roleId,
+    method: 'get'
+  })
+}
+export function getRoleRightIds(roleId: any) {
+  return request({
+    url: 'right/loadRoleRightIds?roleId=' + roleId,
+    method: 'get'
+  })
+}
+export function getRightTree() {
+  return request({
+    url: 'right/loadTree',
+    method: 'get'
+  })
+}
+export function getRoleOption() {
+  return request({
+    url: 'role/loadRoleComboOption',
+    method: 'get'
+  })
+}
 // 部门管理
 export function updateCompanyName(object: {
   companyName: string

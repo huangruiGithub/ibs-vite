@@ -42,7 +42,8 @@ interface rightsType {
 interface stateType {
   token?: string,
   rights: rightsType[],
-  userName: string
+  userName: string,
+  userId: number
 }
 export function setupUser() {
   const userStore = useUserStore()
@@ -73,7 +74,9 @@ export const useUserStore = defineStore({
   state: (): stateType => ({
     token: getToken(),
     rights: localCache.getItem('ibsRouter'),
-    userName: localCache.getItem('userName')
+    userName: localCache.getItem('userName'),
+    userId: localCache.getItem('userId')
+
   }),
   getters: {
   },
@@ -110,6 +113,7 @@ export const useUserStore = defineStore({
             const rights = response.data.rights
             localCache.setItem('ibsRouter', rights)// 存储路由到localStorage
             localCache.setItem('userName', name)// 存储路由到localStorage
+            localCache.setItem('userId', id)// 存储路由到localStorage
             this.rights = rights
             console.log(rights, 'rightsrightsrights')
             // if (hasUpdateRole) {

@@ -31,29 +31,19 @@
               selection
               @paginationChange="getTableData"
             >
-              <!-- <template #files="slotProps">
-          <el-link
-            v-if="slotProps.row.files.path"
-            type="primary"
-            :underline="false"
-            @click="fileDownloadClick(slotProps.row.files)"
-          >
-            下载附件
-          </el-link>
-        </template> -->
               <template #operation="slotProps">
-                <!-- <el-link type="primary" :underline="false" @click="previewClick(slotProps.row)">查看</el-link> -->
-                <el-link type="primary" :underline="false" @click="editClcik(slotProps.row)">修改</el-link>
-
-                <!-- <el-link
-              slot="reference"
-              type="primary"
-              style="margin-left: 12px"
-              :underline="false"
-              @click="delClick(slotProps.row)"
-            >
-              删除
-            </el-link> -->
+                <el-link v-if="slotProps.row.userId !== 1" :underline="false" type="primary">编辑</el-link>
+                <el-link :underline="false" type="primary" class="operatingBtn">重置密码</el-link>
+                <el-link
+                  v-if="slotProps.row.userId !== 1 && slotProps.row.userId !== userStore?.userId"
+                  :underline="false"
+                  type="primary"
+                  style="color: red"
+                  class="operatingBtn"
+                  @click="deleteClick(slotProps.row)"
+                >
+                  删除
+                </el-link>
               </template>
             </FormTable>
             <!-- <DetailForms ref="detailForms" :options="options" @saved="getTableData" /> -->
@@ -68,10 +58,12 @@
 import { reactive, computed, ref } from 'vue'
 import DepartmentTree from '@/components/DepartmentTree/index.vue'
 // import DetailForms from './DetailForms'
-import { getUser } from '@/api/system-management'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { getUser, deleteUser } from '@/api/system-management'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import type { tableLabelType } from '@/components/FormTable/type'
 import _ from 'loadsh'
+import { useUserStore } from '@/store/modules/user'
+const userStore = useUserStore()
 // 过滤
 interface filterDataType {
   userName?: string
@@ -158,19 +150,28 @@ const editClcik = (data: any) => {
     detailForms.value.show('edit', fromData)
   }
 }
-
-// const fileDownloadClick = (file) => {
-//   const path = file.path
-//   const fileName = file.fileName
-//   download({ files: [{ path, fileName }] }).then((res) => {
-//     fileDownload(res)
-//   })
-// }
-// 查看
-// const previewClick = (data) => {
-//   const fromData = _.cloneDeep(data)
-//   detailForms.value.showPreview(fromData)
-// }
+const deleteClick = (row: any) => {
+  ElMessageBox.confirm('此操作将永久删除' + row.userName + '用户, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      deleteUser({ userId: row.userId }).then(() => {
+        ElNotification({
+          type: 'success',
+          message: '删除成功!'
+        })
+        getTableData()
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '已取消删除'
+      })
+    })
+}
 // 表格配置
 const tableLabel = computed((): tableLabelType[] => [
   {
@@ -190,9 +191,10 @@ const tableLabel = computed((): tableLabelType[] => [
     label: '部门'
   },
   {
-    prop: 'operating',
-    label: '操作',
-    type: 'slot'
+    prop: 'operation',
+    type: 'slot',
+    width: 180,
+    label: '操作'
   }
 ])
 </script>
