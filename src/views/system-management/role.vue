@@ -1,12 +1,12 @@
 <template>
-  <MainPage title="用户列表" card style="margin-left: 0">
+  <MainPage card>
     <div class="content">
       <div class="search">
         <span>角色名称：</span>
 
-        <el-input v-model="search.roleName" placeholder="请输入" class="searchInput" />
-        <el-button v-blur type="primary" class="topBtn" @click="searchClick">搜索</el-button>
-        <el-button v-blur type="primary" class="topBtn" @click="alertForm('add', null)">新增</el-button>
+        <el-input v-model="filterData.roleName" placeholder="请输入" class="searchInput" />
+        <el-button v-blur type="primary" @click="searchClick">搜索</el-button>
+        <el-button v-blur type="primary" class="add-btn" @click="alertForm('add', null)">新增</el-button>
       </div>
       <div v-loading="isLoading" class="table-wrap">
         <FormTable
@@ -20,16 +20,14 @@
           selection
           @paginationChange="getTableData"
         >
-          <template #operation="slotProps">
-            <el-link v-if="slotProps.row.userId !== 1" :underline="false" type="primary">编辑</el-link>
-            <el-link :underline="false" type="primary" class="operatingBtn">重置密码</el-link>
+          <template #operation="{ row }">
+            <el-link :underline="false" type="primary" @click="alertForm('edit', row)">修改</el-link>
             <el-link
-              v-if="slotProps.row.userId !== 1 && slotProps.row.userId !== userStore?.userId"
+              v-if="row.isSystem !== 1"
               :underline="false"
-              type="primary"
-              style="color: red"
-              class="operatingBtn"
-              @click="deleteClick(slotProps.row)"
+              type="danger"
+              style="padding-left: 10px"
+              @click="deleteClick(row)"
             >
               删除
             </el-link>
@@ -66,7 +64,7 @@ const submitForm = (type: string, row: any) => {
         type: 'success'
       })
       closeForm()
-      myTable.value.getTableData()
+      getTableData()
     })
   }
   if (type === 'edit') {
@@ -77,7 +75,7 @@ const submitForm = (type: string, row: any) => {
         type: 'success'
       })
       closeForm()
-      myTable.value.getTableData()
+      getTableData()
     })
   }
 }
@@ -93,13 +91,12 @@ const deleteClick = (row: any) => {
         message: '删除角色成功',
         type: 'success'
       })
-      myTable.value.getTableData()
+      getTableData()
     })
   })
 }
 //表格相关
-const myTable = ref()
-const search = ref({ roleName: '' })
+const filterData = reactive({ roleName: '' })
 let searchData: {
   pageSize: number
   currentPage: number
@@ -113,6 +110,32 @@ let searchData: {
   sort: {},
   params: {}
 })
+const tableData = ref([])
+const paginationData = reactive({ currentPage: 1, pageSize: 10 })
+const tableTotalSize = ref(0)
+const isLoading = ref(false)
+const getTableData = () => {
+  isLoading.value = true
+  getRole({
+    params: {
+      ...filterData
+    },
+    sort: {},
+    ...paginationData
+  })
+    .then((res: any) => {
+      tableData.value = res.data.data
+      tableTotalSize.value = res.data.totalCount
+    })
+    .finally(() => {
+      isLoading.value = false
+    })
+}
+const searchClick = () => {
+  searchData.currentPage = 1
+  getTableData()
+}
+getTableData()
 let tableLabel = [
   {
     prop: 'roleId',
@@ -122,8 +145,7 @@ let tableLabel = [
   {
     prop: 'roleName',
     label: '角色名称',
-    width: 300,
-    showOverflowTooltip: false
+    width: 300
   },
   {
     prop: 'remark',
@@ -131,36 +153,13 @@ let tableLabel = [
     showOverflowTooltip: true
   },
   {
-    prop: 'operating',
+    prop: 'operation',
     label: '操作',
     fixed: 'right',
-    type: 'scope',
-    width: 150,
-    minWidth: 150,
-    showOverflowTooltip: false
+    type: 'slot',
+    width: 300
   }
 ]
-let tableTotalSize = ref(0)
-let currentRow = ref({})
-const isLoading = ref(false)
-const getTableData = (cab: any) => {
-  isLoading.value = true
-  getRole(searchData)
-    .then((res: any) => {
-      tableTotalSize.value = res.data.totalCount
-    })
-    .finally(() => {
-      isLoading.value = false
-    })
-}
-const currentChange = (val: any) => {
-  currentRow.value = val
-}
-const searchClick = () => {
-  searchData.currentPage = 1
-  searchData.params['roleName'] = search.value.roleName
-  myTable.value.getTableData()
-}
 </script>
 
 <style lang="less" scoped></style>
