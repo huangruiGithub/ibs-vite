@@ -39,6 +39,12 @@ export function deleteUser(data: { userId: any }) {
     data
   })
 }
+export function getDeptOptions() {
+  return request({
+    url: 'department/loadTree',
+    method: 'get'
+  })
+}
 
 // 角色管理
 export function getRole(data: {

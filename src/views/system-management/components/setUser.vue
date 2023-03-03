@@ -244,7 +244,6 @@ const rules = {
   department: [
     {
       required: true,
-      type: 'array',
       message: '请选择部门',
       trigger: 'blur'
     }
@@ -252,7 +251,6 @@ const rules = {
   email: [
     {
       required: true,
-      type: 'email',
       message: '请输入正确的邮箱地址',
       trigger: ['blur', 'change']
     }
@@ -270,6 +268,7 @@ interface FormDataProps {
   email: string | null
   mobile: string | null
   telephone: string | null
+  password: string
 }
 const userData: FormDataProps = reactive({
   userId: null,
@@ -280,7 +279,8 @@ const userData: FormDataProps = reactive({
   sex: '未定义',
   email: '',
   mobile: '',
-  telephone: ''
+  telephone: '',
+  password: ''
 })
 const userForm = ref()
 const submitForm = () => {
