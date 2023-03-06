@@ -18,25 +18,39 @@ export function getUser(data: getUserParamsType) {
     data
   })
 }
-// export function addUser(object) {
-//   return request({
-//     url: 'user/add',
-//     method: 'post',
-//     data: object
-//   })
-// }
-// export function updateUser(object) {
-//   return request({
-//     url: 'user/update',
-//     method: 'post',
-//     data: object
-//   })
-// }
+export function addUser(object: any) {
+  return request({
+    url: 'user/add',
+    method: 'post',
+    data: object
+  })
+}
+export function updateUser(object: any) {
+  return request({
+    url: 'user/update',
+    method: 'post',
+    data: object
+  })
+}
 export function deleteUser(data: { userId: any }) {
   return request({
     url: 'user/delete',
     method: 'post',
     data
+  })
+}
+export function sendUserPasswordEmail(object: any) {
+  return request({
+    url: 'user/send',
+    method: 'post',
+    data: object
+  })
+}
+export function resetPassword(object: any) {
+  return request({
+    url: 'user/resetPassword',
+    method: 'post',
+    data: object
   })
 }
 export function getDeptOptions() {

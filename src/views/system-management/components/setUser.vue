@@ -3,7 +3,6 @@
     <el-drawer v-model="drawerVisible" title="我是标题" size="40%" :with-header="false" @close="cancelForm">
       <div class="drawerForm">
         <div class="pageTitle">
-          <span class="titleBorder">|</span>
           <div class="titleText">{{ pageTitle }}</div>
           <slot name="header" />
           <el-divider />
